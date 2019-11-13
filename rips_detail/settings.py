@@ -21,6 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'n2(5z-x0x5lk9c-1id8eoxi^am0%eopk1zr19dkp6d9*733^3j'
+#SECRET_KEY = '3u^a!g9v@7r&0=4001n()z_&aokn$$s$62bm7lnq1!&@y@5^ob'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -70,6 +71,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'rips_detail.wsgi.application'
+
 
 
 # Password validation
