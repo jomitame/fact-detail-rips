@@ -1,0 +1,15 @@
+{% extends 'rdf/base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="card form-group otraclase">
+            <div class="card-header">
+                <h5 class="text-center">CREATOR</h5>
+            </div>
+                <form class="p-2" method="post" action="{%  url 'rdf:creator' %}">
+                   {% csrf_token %}
+                    {{ form }}
+                    <button type="submit" class="btn btn-outline-primary">Create</button>
+                </form>
+        </div>
+    </div>
+{% endblock content %}

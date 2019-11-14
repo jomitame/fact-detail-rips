@@ -55,12 +55,19 @@ class Patient(models.Model):
     eps = models.ForeignKey(EPS, on_delete=models.CASCADE)
     gene = models.CharField(max_length=10, choices=GEN)
     type_id = models.CharField(max_length=10, choices=TYPE_ID, default=CEDULA)
-    born_date = models.DateField() # for age
+    num_id = models.CharField(max_length=10, default=0)
+    born_date = models.DateField(default=datetime.date(2000,1,1)) # for age
     #age_mess = models.CharField(max_length=10, choices=AGE_MESS, default=YEAR)
     diagnostic = models.ForeignKey(Diagnostic, on_delete=models.CASCADE)
 
     def _get_age (self):
-        return int((datetime.date.today() - self.born_date).days // 365.2425)
+        tiempo = (datetime.date.today() - self.born_date).days
+        if tiempo // 365.2425 > 0:
+            return int(tiempo // 365.2425)
+        elif tiempo % 365.2425  > 30:
+            return int((tiempo % 365.2425) // 30.64)
+        else:
+            return int(tiempo % 365.2425)
 
     def _get_age_messure(self):
         tiempo = (datetime.date.today() - self.born_date).days
@@ -123,6 +130,7 @@ class DetailMedi(models.Model):
 
 class Treatement(models.Model):
     name = name = models.CharField(max_length=100)
+    cod_treat = models.CharField(max_length=10, default=0)
     is_pos = models.BooleanField()
     especial = models.BooleanField(default=True)
     price = models.FloatField(default=0.0)
@@ -142,3 +150,27 @@ class DetailTreat(models.Model):
 
     def __str__(self):
         return str(self.fact)+' - '+str(self.treat)
+
+
+class Laboratory(models.Model):
+    name = models.CharField(max_length=100)
+    codigo = models.CharField(max_length=100)
+    price = models.FloatField()
+
+    def __str__(self):
+        return self.name
+
+
+class DetailLabo(models.Model):
+    fact = models.ForeignKey(Fact, on_delete=models.CASCADE)
+    labo = models.ForeignKey(Laboratory, on_delete=models.CASCADE)
+    cant = models.IntegerField()
+
+    def _subtotal(self):
+        return self.cant * self.labo.price
+
+
+    def __str__(self):
+        return str(self.fact) + ' - ' + str(self.labo)
+
+    subtotal = property(_subtotal)
