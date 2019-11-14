@@ -25,4 +25,18 @@ class CreatorXLSXView(TemplateView):
         return super(CreatorXLSXView, self).form_invalid(form)
 
     def post(self, request):
-        pass
+        my_form = CreatorForm(request.POST)
+        if my_form.is_valid():
+            workbook = Workbook()
+            worksheet = workbook.active
+            worksheet.title = 'Epa'
+
+            response = HttpResponse(
+                content_type = 'application/ms-excel'
+            )
+            response['Content-Disposition'] = 'attachment; filename = report_{date}.xlsx'.format(
+                date=datetime.now().strftime("%d%m%Y-%H%M%S"),
+            )
+            workbook.save(response)
+            return response
+        return render(request, "rdf/creator.html", {'form': my_form})
