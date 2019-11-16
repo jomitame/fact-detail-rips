@@ -5,10 +5,22 @@ from django import forms
 
 class CreatorForm(forms.Form):
 
-    #fecha_ini = forms.DateField(label='Fecha Inicial', widget=DatePickerInput(format='%Y-%m-%d'))
-    #fecha_fin = forms.DateField(label='Fecha Final', widget=DatePickerInput(format='%Y-%m-%d'))
-    fecha_ini =  forms.DateField(label='Fecha Inicial')
-    fecha_fin = forms.DateField(label='Fecha Final')
+    fecha_ini = forms.DateField(
+        label='Fecha Inicial',
+        input_formats=['%d/%m/%Y'],
+        widget=forms.DateTimeInput(attrs={
+            'class': 'form-control datetimepicker-input',
+            'data-target': '#datetimepicker1'
+        })
+    )
+    fecha_fin = forms.DateField(#DateTimeField
+        label='Fecha Final',
+        input_formats=['%d/%m/%Y'],# %H:%M
+        widget=forms.DateTimeInput(attrs={
+            'class': 'form-control datetimepicker-input',
+            'data-target': '#datetimepicker2'
+        })
+    )
 
     def clean(self):
         cleaned_data = super(CreatorForm, self).clean()

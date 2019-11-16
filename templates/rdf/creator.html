@@ -5,11 +5,37 @@
             <div class="card-header">
                 <h5 class="text-center">CREATOR</h5>
             </div>
-                <form class="p-2" method="post" action="{%  url 'rdf:creator' %}">
-                   {% csrf_token %}
-                    {{ form }}
-                    <button type="submit" class="btn btn-outline-primary">Create</button>
-                </form>
+            <form class="p-2" method="post" action="{% url 'rdf:creator' %}">
+                {% csrf_token %}
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                    {{ form.fecha_ini }}
+                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                    {{ form.fecha_fin }}
+                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Create</button>
+
+                {{ form.errors }}
+
+            </form>
         </div>
     </div>
+
+    <script>
+        $(function () {
+            $("#datetimepicker1").datetimepicker({
+                format: 'DD/MM/YYYY',
+            });
+            $("#datetimepicker2").datetimepicker({
+                format: 'DD/MM/YYYY',//HH:mm
+            });
+        });
+    </script>
 {% endblock content %}
+
