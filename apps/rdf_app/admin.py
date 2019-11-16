@@ -14,13 +14,13 @@ class labo_inline(admin.TabularInline):
     model = (DetailLabo)
     extra = 0
     readonly_fields = ('subtotal',)
-    autocomplete_fields = ('labo',)
+    autocomplete_fields = ('laboratory',)
 
 class treat_inline(admin.TabularInline):
     model = (DetailTreat)
     extra = 0
     readonly_fields = ('subtotal',)
-    autocomplete_fields = ('treat',)
+    autocomplete_fields = ('treatement',)
 
 
 @admin.register(Fact)

@@ -74,7 +74,7 @@ class Patient(models.Model):
         years =  tiempo // 365.2425
         months = tiempo % 365.2425
         if years > 0:
-            mesure = 'years'
+            mesure = 'años'
         elif months >= 30:
             mesure = 'meses'
         else:
@@ -106,6 +106,7 @@ class Medicine(models.Model):
 class Fact(models.Model):
     cod_fact = models.CharField(max_length=10, unique=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    regional = models.ForeignKey(Regional, on_delete=models.CASCADE, default=2)
     aut_number = models.IntegerField()
     date_fact = models.DateField()
     cut_ini = models.DateField()
@@ -118,6 +119,7 @@ class Fact(models.Model):
 class DetailMedi(models.Model):
     fact = models.ForeignKey(Fact, on_delete=models.CASCADE)
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    dosis = models.CharField(max_length=50)
     cant = models.IntegerField()
 
     def _subtotal(self):
@@ -140,16 +142,16 @@ class Treatement(models.Model):
 
 class DetailTreat(models.Model):
     fact = models.ForeignKey(Fact, on_delete=models.CASCADE)
-    treat = models.ForeignKey(Treatement, on_delete=models.CASCADE)
+    treatement = models.ForeignKey(Treatement, on_delete=models.CASCADE)
     cant = models.IntegerField()
 
     def _subtotal(self):
-        return self.cant * self.treat.price
+        return self.cant * self.treatement.price
 
     subtotal = property(_subtotal)
 
     def __str__(self):
-        return str(self.fact)+' - '+str(self.treat)
+        return str(self.fact)+' - '+str(self.treatement)
 
 
 class Laboratory(models.Model):
@@ -163,14 +165,14 @@ class Laboratory(models.Model):
 
 class DetailLabo(models.Model):
     fact = models.ForeignKey(Fact, on_delete=models.CASCADE)
-    labo = models.ForeignKey(Laboratory, on_delete=models.CASCADE)
+    laboratory = models.ForeignKey(Laboratory, on_delete=models.CASCADE)
     cant = models.IntegerField()
 
     def _subtotal(self):
-        return self.cant * self.labo.price
+        return self.cant * self.laboratory.price
 
 
     def __str__(self):
-        return str(self.fact) + ' - ' + str(self.labo)
+        return str(self.fact) + ' - ' + str(self.laboratory)
 
     subtotal = property(_subtotal)
