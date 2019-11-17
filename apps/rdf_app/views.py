@@ -14,11 +14,49 @@ class CreatorXLSXView(TemplateView):
     template_name = 'rdf/creator.html'
     form_class = CreatorForm
 
+
     def get(self, request):
         return render(request, self.template_name, {'form':self.form_class})
 
     def form_invalid(self, form):
         return super(CreatorXLSXView, self).form_invalid(form)
+
+
+    def fill_detail(self, type, title, mylist, ws, fl, total, *args, **kwargs ):
+        if mylist:
+            ws.cell(row=fl, column=1).value = title
+            ws.merge_cells(start_row=fl, start_column=1, end_row=fl, end_column=7)
+            fl += 1
+            ws.cell(row=fl, column=1).value = args[0]
+            ws.cell(row=fl, column=2).value = args[1]
+            ws.cell(row=fl, column=4).value = args[2]
+            ws.cell(row=fl, column=5).value = args[3]
+            ws.cell(row=fl, column=6).value = args[4]
+            ws.cell(row=fl, column=7).value = args[5]
+            fl += 1
+            if type==1:
+                for elem in mylist:
+                    ws.cell(row=fl, column=1).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a2']))
+                    ws.cell(row=fl, column=2).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a3']))
+                    ws.cell(row=fl, column=4).value = str(getattr(elem, kwargs['a4']))
+                    ws.cell(row=fl, column=5).value = int(getattr(elem, kwargs['a5']))
+                    ws.cell(row=fl, column=6).value = round(float(getattr(getattr(elem, kwargs['a1']), kwargs['a6'])), 2)
+                    ws.cell(row=fl, column=7).value = round(float(getattr(elem, kwargs['a7'])), 2)
+                    fl += 1
+            elif type==2:
+                for elem in mylist:
+                    ws.cell(row=fl, column=1).value = str(kwargs['a7'])
+                    ws.cell(row=fl, column=2).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a2']))
+                    ws.cell(row=fl, column=4).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a3']))
+                    ws.cell(row=fl, column=5).value = int(getattr(elem, kwargs['a4']))
+                    ws.cell(row=fl, column=6).value = round(float(getattr(getattr(elem, kwargs['a1']), kwargs['a5'])), 2)
+                    ws.cell(row=fl, column=7).value = round(float(getattr(elem, kwargs['a6'])), 2)
+                    fl += 1
+            ws.cell(row=fl, column=1).value = args[6]
+            ws.merge_cells(start_row=fl, start_column=1, end_row=fl, end_column=6)
+            ws.cell(row=fl, column=7).value = round(float(total), 2)
+            fl += 1
+        return fl
 
     def post(self, request):
         my_form = CreatorForm(request.POST)
@@ -53,117 +91,64 @@ class CreatorXLSXView(TemplateView):
 
 
                 #obtención de datos
+                frs_line = 10
                 medis_pos = DetailMedi.objects.filter(fact__cod_fact=fact.cod_fact, medicine__is_pos=True)
                 medis_nopos = DetailMedi.objects.filter(fact__cod_fact=fact.cod_fact, medicine__is_pos=False)
                 labos = DetailLabo.objects.filter(fact__cod_fact=fact.cod_fact)
                 treats = DetailTreat.objects.filter(fact__cod_fact=fact.cod_fact)
-                total_medis = DetailMedi.objects.filter(fact__cod_fact=fact.cod_fact).aggregate(
+                #----------------------------cambiar total no pos
+                total_medis_pos = DetailMedi.objects.filter(fact__cod_fact=fact.cod_fact,
+                                                            medicine__is_pos=True).aggregate(
+                    sum=Sum(F('cant') * F('medicine__price'), output_field=FloatField()))
+                total_medis_nopos = DetailMedi.objects.filter(fact__cod_fact=fact.cod_fact,
+                                                              medicine__is_pos=False).aggregate(
                     sum=Sum(F('cant') * F('medicine__price'), output_field=FloatField()))
                 total_labos = DetailLabo.objects.filter(fact__cod_fact=fact.cod_fact).aggregate(
                     sum=Sum(F('cant') * F('laboratory__price'), output_field=FloatField()))
                 total_treats = DetailTreat.objects.filter(fact__cod_fact=fact.cod_fact).aggregate(
                     sum=Sum(F('cant') * F('treatement__price'), output_field=FloatField()))
 
-                frs_line = 9
-                # Medicamentos POS
-                if medis_pos:
-                    worksheet.cell(row=frs_line, column=1).value = 'SERVICIO FARMACEUTICO REMEO - MEDICAMENTOS POS'
-                    worksheet.cell(row=frs_line, column=1).fill
-                    worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=7)
-                    frs_line += 1
-                    worksheet.cell(row=frs_line, column=1).value = 'CODIGO CUM'
-                    worksheet.cell(row=frs_line, column=2).value = 'MEDICAMENTOS'
-                    worksheet.cell(row=frs_line, column=4).value = 'DOSIS'
-                    worksheet.cell(row=frs_line, column=5).value = 'CANTIDAD'
-                    worksheet.cell(row=frs_line, column=6).value = 'VALOR UNITARIO'
-                    worksheet.cell(row=frs_line, column=7).value = 'VALOR TOTAL'
-                    frs_line += 1
-                    for medi in medis_pos:
-                        worksheet.cell(row=frs_line, column=1).value = str(medi.medicine.cod_cum)
-                        worksheet.cell(row=frs_line, column=2).value = str(medi.medicine.name)
-                        worksheet.cell(row=frs_line, column=4).value = int(medi.dosis)
-                        worksheet.cell(row=frs_line, column=5).value = int(medi.cant)
-                        worksheet.cell(row=frs_line, column=6).value = round(float(medi.medicine.price),2)
-                        worksheet.cell(row=frs_line, column=7).value = round(float(medi.subtotal),2)
-                        frs_line += 1
-                    worksheet.cell(row=frs_line, column=1).value = 'TOTAL MEDICAMENTOS POS'
-                    worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=6)
-                    worksheet.cell(row=frs_line, column=7).value = round(float(total_medis['sum']),2)
-                    frs_line += 1
 
-                # MEdicamentos NO POS
-                if medis_nopos:
-                    worksheet.cell(row=frs_line, column=1).value = 'SERVICIO FARMACEUTICO REMEO - MEDICAMENTOS NO POS'
-                    worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=7)
-                    frs_line += 1
-                    worksheet.cell(row=frs_line, column=1).value = 'CODIGO CUM'
-                    worksheet.cell(row=frs_line, column=2).value = 'MEDICAMENTOS'
-                    worksheet.cell(row=frs_line, column=4).value = 'DOSIS'
-                    worksheet.cell(row=frs_line, column=5).value = 'CANTIDAD'
-                    worksheet.cell(row=frs_line, column=6).value = 'VALOR UNITARIO'
-                    worksheet.cell(row=frs_line, column=7).value = 'VALOR TOTAL'
-                    frs_line += 1
-                    for medi in medis_pos:
-                        worksheet.cell(row=frs_line, column=1).value = str(medi.medicine.cod_cum)
-                        worksheet.cell(row=frs_line, column=2).value = str(medi.medicine.name)
-                        worksheet.cell(row=frs_line, column=4).value = int(medi.dosis)
-                        worksheet.cell(row=frs_line, column=5).value = int(medi.cant)
-                        worksheet.cell(row=frs_line, column=6).value = round(float(medi.medicine.price),2)
-                        worksheet.cell(row=frs_line, column=7).value = round(float(medi.subtotal),2)
-                        frs_line += 1
-                    worksheet.cell(row=frs_line, column=1).value = 'TOTAL MEDICAMENTOS NO POS'
-                    worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=6)
-                    worksheet.cell(row=frs_line, column=7).value = round(float(total_medis['sum']),2)
-                    frs_line += 1
+                # Medicamentos POS
+                titulos = ['CODIGO CUM', 'MEDICAMENTOS', 'DOSIS', 'CANTIDAD', 'VALOR UNITARIO', 'VALOR TOTAL',
+                           'TOTAL MEDICAMENTOS POS']
+                valores = {'a1': 'medicine', 'a2': 'cod_cum', 'a3': 'name', 'a4': 'dosis', 'a5': 'cant', 'a6': 'price',
+                           'a7': 'subtotal'}
+                frs_line = self.fill_detail(1, 'SERVICIO FARMACEUTICO REMEO - MEDICAMENTOS POS', medis_pos, worksheet, frs_line,
+                                 total_medis_pos['sum'], *titulos, **valores)
+
+                # Medicamentos NO POS
+                titulos = ['CODIGO CUM', 'MEDICAMENTOS', 'DOSIS', 'CANTIDAD', 'VALOR UNITARIO', 'VALOR TOTAL',
+                           'TOTAL MEDICAMENTOS NO POS']
+                valores = {'a1': 'medicine', 'a2': 'cod_cum', 'a3': 'name', 'a4': 'dosis', 'a5': 'cant', 'a6': 'price',
+                           'a7': 'subtotal'}
+                frs_line = self.fill_detail(1, 'SERVICIO FARMACEUTICO REMEO - MEDICAMENTOS NO POS', medis_nopos, worksheet,
+                                            frs_line,
+                                            total_medis_nopos['sum'], *titulos, **valores)
 
                 # Laboratorios
-                if labos:
-                    worksheet.cell(row=frs_line, column=1).value = 'SERVICIO LABORATORIO CLINICO'
-                    worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=7)
-                    frs_line += 1
-                    worksheet.cell(row=frs_line, column=1).value = 'FECHA'
-                    worksheet.cell(row=frs_line, column=2).value = 'NOMBRE'
-                    worksheet.cell(row=frs_line, column=4).value = 'CODIGO'
-                    worksheet.cell(row=frs_line, column=5).value = 'CANTIDAD'
-                    worksheet.cell(row=frs_line, column=6).value = 'VALOR UNITARIO'
-                    worksheet.cell(row=frs_line, column=7).value = 'VALOR TOTAL'
-                    frs_line += 1
-                    for labo in labos:
-                        worksheet.cell(row=frs_line, column=1).value = str(fact.cut_ini)
-                        worksheet.cell(row=frs_line, column=2).value = str(labo.laboratory.name)
-                        worksheet.cell(row=frs_line, column=4).value = str(labo.laboratory.codigo)
-                        worksheet.cell(row=frs_line, column=5).value = int(labo.cant)
-                        worksheet.cell(row=frs_line, column=6).value = round(float(labo.laboratory.price), 2)
-                        worksheet.cell(row=frs_line, column=7).value = round(float(labo.subtotal), 2)
-                        frs_line += 1
-                    worksheet.cell(row=frs_line, column=1).value = 'TOTAL SERVICIO DE LABORATORIO CLINICO'
-                    worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=6)
-                    worksheet.cell(row=frs_line, column=7).value = round(float(total_labos['sum']), 2)
-                    frs_line += 1
+                titulos = ['FECHA', 'NOMBRE', 'CODIGO', 'CANTIDAD', 'VALOR UNITARIO', 'VALOR TOTAL',
+                           'TOTAL MEDICAMENTOS LABORATORIOS']
+                valores = {'a1': 'laboratory', 'a2': 'name', 'a3': 'codigo', 'a4': 'cant', 'a5': 'price', 'a6': 'subtotal',
+                           'a7': fact.cut_ini}
+                frs_line = self.fill_detail(2, 'SERVICIO LABORATORIO CLINICO', labos,
+                                            worksheet,
+                                            frs_line,
+                                            total_labos['sum'], *titulos, **valores)
 
-                if treats:
-                    worksheet.cell(row=frs_line, column=1).value = 'TRATAMIENTOS'
-                    worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=7)
-                    frs_line += 1
-                    worksheet.cell(row=frs_line, column=1).value = 'FECHA'
-                    worksheet.cell(row=frs_line, column=2).value = 'NOMBRE'
-                    worksheet.cell(row=frs_line, column=4).value = 'CODIGO'
-                    worksheet.cell(row=frs_line, column=5).value = 'CANTIDAD'
-                    worksheet.cell(row=frs_line, column=6).value = 'VALOR UNITARIO'
-                    worksheet.cell(row=frs_line, column=7).value = 'VALOR TOTAL'
-                    frs_line += 1
-                    for treat in treats:
-                        worksheet.cell(row=frs_line, column=1).value = str(fact.cut_ini)
-                        worksheet.cell(row=frs_line, column=2).value = str(treat.treatement.name)
-                        worksheet.cell(row=frs_line, column=4).value = str(treat.treatement.cod_treat)
-                        worksheet.cell(row=frs_line, column=5).value = int(treat.cant)
-                        worksheet.cell(row=frs_line, column=6).value = round(float(treat.treatement.price), 2)
-                        worksheet.cell(row=frs_line, column=7).value = round(float(treat.subtotal), 2)
-                        frs_line += 1
-                    worksheet.cell(row=frs_line, column=1).value = 'TOTAL SERVICIO DE TRATAMIENTOS'
-                    worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=6)
-                    worksheet.cell(row=frs_line, column=7).value = round(float(total_treats['sum']), 2)
-                    frs_line += 1
+                # Tratamientos
+                titulos = ['FECHA', 'NOMBRE', 'CODIGO', 'CANTIDAD', 'VALOR UNITARIO', 'VALOR TOTAL',
+                           'TOTAL MEDICAMENTOS LABORATORIOS']
+                valores = {'a1': 'treatement', 'a2': 'name', 'a3': 'cod_treat', 'a4': 'cant', 'a5': 'price',
+                           'a6': 'subtotal',
+                           'a7': fact.cut_ini}
+                frs_line = self.fill_detail(2, 'TRATAMIENTOS', treats,
+                                            worksheet,
+                                            frs_line,
+                                            total_treats['sum'], *titulos, **valores)
+
+
+
 
             workbook.remove(sheet_temp)
 

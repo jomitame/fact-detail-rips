@@ -56,8 +56,7 @@ class Patient(models.Model):
     gene = models.CharField(max_length=10, choices=GEN)
     type_id = models.CharField(max_length=10, choices=TYPE_ID, default=CEDULA)
     num_id = models.CharField(max_length=10, default=0)
-    born_date = models.DateField(default=datetime.date(2000,1,1)) # for age
-    #age_mess = models.CharField(max_length=10, choices=AGE_MESS, default=YEAR)
+    born_date = models.DateField(default=datetime.date(2000,1,1))
     diagnostic = models.ForeignKey(Diagnostic, on_delete=models.CASCADE)
 
     def _get_age (self):
