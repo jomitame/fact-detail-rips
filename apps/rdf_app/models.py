@@ -117,19 +117,6 @@ class Concentration(models.Model):
     def __str__(self):
         return self.name
 
-class Medicine(models.Model):
-    cod_cum = models.CharField(max_length=50, unique=True)
-    name = models.CharField(max_length=100)
-    name_rips = models.CharField(max_length=50)
-    is_pos = models.BooleanField()
-    presentation = models.ForeignKey(Presentation, on_delete=models.CASCADE)
-    concentration = models.ForeignKey(Concentration, on_delete=models.CASCADE)
-    cant_concent = models.PositiveIntegerField()
-    price = models.FloatField(default=0.0)
-
-    def __str__(self):
-        return self.name
-
 
 class Fact(models.Model):
     cod_fact = models.CharField(max_length=10, unique=True)
@@ -146,19 +133,70 @@ class Fact(models.Model):
     def __str__(self):
         return self.cod_fact+' - '+str(self.patient)
 
+
+class Medicine(models.Model):
+    cod_cum = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=100)
+    name_rips = models.CharField(max_length=50)
+    is_pos = models.BooleanField()
+    presentation = models.ForeignKey(Presentation, on_delete=models.CASCADE)
+    concentration = models.ForeignKey(Concentration, on_delete=models.CASCADE)
+    cant_concent = models.PositiveIntegerField()
+    #price = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return self.name
+
+
+class PriceMedicine(models.Model):
+    eps = models.ForeignKey(EPS, on_delete=models.CASCADE)
+    medto = models.ForeignKey(Medicine, on_delete=models.CASCADE, related_name='pri_med')
+    price = models.FloatField(default=0.0)
+
+    class Meta:
+        unique_together = ('eps', 'medto')
+
+    def __str__(self):
+        return self.eps.name_rips+' - '+self.medto.name_rips
+
+
 class DetailMedi(models.Model):
     fact = models.ForeignKey(Fact, on_delete=models.CASCADE)
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
     dosis = models.CharField(max_length=50)
     cant = models.IntegerField()
 
-    def _subtotal(self):
-        return self.cant * self.medicine.price
-
-    subtotal = property(_subtotal)
-
     def __str__(self):
         return str(self.fact)+' - '+str(self.medicine)
+
+    def _price(self):
+        return PriceMedicine.objects.filter(eps=self.fact.patient.eps, medto=self.medicine).first().price
+
+    def _subtotal(self):
+        return self.cant * self._price()
+
+    subtotal = property(_subtotal)
+    price = property(_price)
+
+class DetailMediNoPos(models.Model):
+    fact = models.ForeignKey(Fact, on_delete=models.CASCADE)
+    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    mipres = models.CharField(max_length=50)
+    dosis = models.CharField(max_length=50)
+    cant = models.IntegerField()
+
+    def __str__(self):
+        return str(self.fact)+' - '+str(self.medicine)+' No Pos'
+
+    def _price(self):
+        return PriceMedicine.objects.filter(eps=self.fact.patient.eps, medto=self.medicine).first().price
+
+    def _subtotal(self):
+        return self.cant * self._price()
+
+    price = property(_price)
+    subtotal = property(_subtotal)
+
 
 class Dispositive(models.Model):
     name = models.CharField(max_length=100)
@@ -166,33 +204,64 @@ class Dispositive(models.Model):
     codigo = models.CharField(max_length=10, default=0)
     is_pos = models.BooleanField()
     especial = models.BooleanField(default=True)
-    price = models.FloatField(default=0.0)
+    #price = models.FloatField(default=0.0)
 
     def __str__(self):
         return self.name
+
+
+class PriceDispositive(models.Model):
+    eps = models.ForeignKey(EPS, on_delete=models.CASCADE)
+    dispo = models.ForeignKey(Dispositive, on_delete=models.CASCADE)
+    price = models.FloatField(default=0.0)
+
+    class Meta:
+        unique_together = ('eps', 'dispo')
+
+    def __str__(self):
+        return self.eps.name_rips+' - '+self.dispo.name_rips
+
+
 
 class DetailDispo(models.Model):
     fact = models.ForeignKey(Fact, on_delete=models.CASCADE)
     dispositive = models.ForeignKey(Dispositive, on_delete=models.CASCADE)
     cant = models.IntegerField()
 
-    def _subtotal(self):
-        return self.cant * self.dispositive.price
-
-    subtotal = property(_subtotal)
-
     def __str__(self):
         return str(self.fact)+' - '+str(self.dispositive)
+
+    def _price(self):
+        return PriceDispositive.objects.filter(eps=self.fact.patient.eps, dispo=self.dispositive).first().price
+
+    def _subtotal(self):
+        return self.cant * self._price()
+
+    price = property(_price)
+    subtotal = property(_subtotal)
+
 
 
 class Laboratory(models.Model):
     name = models.CharField(max_length=100)
     name_rips = models.CharField(max_length=50, null=True)
     codigo = models.CharField(max_length=100)
-    price = models.FloatField()
+    #price = models.FloatField()
 
     def __str__(self):
         return self.name
+
+
+class PriceLabo(models.Model):
+    eps = models.ForeignKey(EPS, on_delete=models.CASCADE)
+    labo = models.ForeignKey(Laboratory, on_delete=models.CASCADE)
+    price = models.FloatField(default=0.0)
+
+    class Meta:
+        unique_together = ('eps', 'labo')
+
+    def __str__(self):
+        return self.eps.name_rips+' - '+self.labo.name_rips
 
 
 class DetailLabo(models.Model):
@@ -200,23 +269,41 @@ class DetailLabo(models.Model):
     laboratory = models.ForeignKey(Laboratory, on_delete=models.CASCADE)
     cant = models.IntegerField()
 
-    def _subtotal(self):
-        return self.cant * self.laboratory.price
-
-
     def __str__(self):
         return str(self.fact) + ' - ' + str(self.laboratory)
 
+    def _price(self):
+        return PriceLabo.objects.filter(eps=self.fact.patient.eps, labo=self.laboratory).first().price
+
+    def _subtotal(self):
+        return self.cant * self._price()
+
+    price = property(_price)
     subtotal = property(_subtotal)
+
+
 
 class Service(models.Model):
     name = models.CharField(max_length=100)
     name_rips = models.CharField(max_length=100)
     codigo = models.CharField(max_length=100)
-    price = models.FloatField()
+    #price = models.FloatField()
+
 
     def __str__(self):
         return self.name
+
+
+class PriceService(models.Model):
+    eps = models.ForeignKey(EPS, on_delete=models.CASCADE)
+    servi = models.ForeignKey(Service, on_delete=models.CASCADE)
+    price = models.FloatField(default=0.0)
+
+    class Meta:
+        unique_together = ('eps', 'servi')
+
+    def __str__(self):
+        return self.eps.name_rips+' - '+self.servi.name_rips
 
 
 class DetailService(models.Model):
@@ -224,11 +311,14 @@ class DetailService(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     cant = models.IntegerField()
 
-    def _subtotal(self):
-        return self.cant * self.service.price
-
-
     def __str__(self):
         return str(self.fact) + ' - ' + str(self.service)
 
+    def _price(self):
+        return PriceService.objects.filter(eps=self.fact.patient.eps, servi=self.service).first().price
+
+    def _subtotal(self):
+        return self.cant * self._price()
+
+    price = property(_price)
     subtotal = property(_subtotal)

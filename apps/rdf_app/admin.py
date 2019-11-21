@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-
 from .models import Company, Regional, EPS, Diagnostic, Patient, Medicine, Fact, DetailMedi, Dispositive, DetailDispo, \
-    Laboratory, DetailLabo, Service, DetailService, Presentation, Concentration, Departament, Municipe
+    Laboratory, DetailLabo, Service, DetailService, Presentation, Concentration, Departament, Municipe, PriceMedicine, \
+    PriceService, PriceDispositive, PriceLabo, DetailMediNoPos
 
 class servi_inline(admin.TabularInline):
     model = (DetailService)
@@ -12,6 +12,12 @@ class servi_inline(admin.TabularInline):
 
 class medi_inline(admin.TabularInline):
     model =  (DetailMedi)
+    extra = 0
+    readonly_fields = ('subtotal',)
+    autocomplete_fields = ('medicine',)
+
+class medinopos_inline(admin.TabularInline):
+    model = (DetailMediNoPos)
     extra = 0
     readonly_fields = ('subtotal',)
     autocomplete_fields = ('medicine',)
@@ -31,7 +37,7 @@ class dispo_inline(admin.TabularInline):
 
 @admin.register(Fact)
 class factAdmin(admin.ModelAdmin):
-    inlines = (medi_inline, dispo_inline, labo_inline, servi_inline)
+    inlines = (servi_inline, medi_inline, medinopos_inline, dispo_inline, labo_inline, )
     autocomplete_fields = ('patient',)
 
 
@@ -74,6 +80,7 @@ admin.site.register(Regional)
 admin.site.register(EPS)
 admin.site.register(Diagnostic)
 admin.site.register(DetailMedi)
+admin.site.register(DetailMediNoPos)
 admin.site.register(DetailLabo)
 admin.site.register(DetailDispo)
 admin.site.register(DetailService)
@@ -81,9 +88,8 @@ admin.site.register(Presentation)
 admin.site.register(Concentration)
 admin.site.register(Departament)
 admin.site.register(Municipe)
-#admin.site.register(Fact, factAdmin)
-#admin.site.register(Patient, PapientAdmin)
-#admin.site.register(Patient)
-#admin.site.register(Medicine)
-#admin.site.register(Fact)
-#admin.site.register(Treatement)
+admin.site.register(PriceMedicine)
+admin.site.register(PriceLabo)
+admin.site.register(PriceDispositive)
+admin.site.register(PriceService)
+
