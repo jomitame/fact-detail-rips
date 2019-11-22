@@ -1,0 +1,18 @@
+{% extends 'rdf/base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="card form-group otraclase">
+            <div class="card-header">
+                <h5 class="text-center">GENERATOR</h5>
+            </div>
+            <form class="p-2" method="post" action="{% url 'rdf:generator' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-primary">Generate</button>
+                {{ form.errors }}
+            </form>
+        </div>
+    </div>
+
+
+{% endblock content %}
+

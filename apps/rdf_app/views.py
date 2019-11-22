@@ -1,4 +1,6 @@
 from datetime import datetime
+from io import open
+import os
 
 from django.db.models import Sum, F, FloatField, Q
 from django.shortcuts import render
@@ -6,8 +8,8 @@ from openpyxl import Workbook
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 
-from apps.rdf_app.models import Fact, DetailMedi, DetailLabo, DetailDispo, DetailService, DetailMediNoPos
-from apps.rdf_app.forms import CreatorForm
+from apps.rdf_app.models import Fact, DetailMedi, DetailLabo, DetailDispo, DetailService, DetailMediNoPos, Patient
+from apps.rdf_app.forms import CreatorForm, GeneratorForm
 from apps.rdf_app.utils.style import give_style
 
 class CreatorXLSXView(TemplateView):
@@ -21,7 +23,6 @@ class CreatorXLSXView(TemplateView):
 
     def form_invalid(self, form):
         return super(CreatorXLSXView, self).form_invalid(form)
-
 
     def fill_detail(self, type, title, mylist, ws, fl, total, *args, **kwargs ):
         if mylist:
@@ -198,7 +199,7 @@ class CreatorXLSXView(TemplateView):
                 worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
                 frs_line += 2
 
-                #obtención de datos
+                # obtención de datos
                 medis_pos = DetailMedi.objects.filter(fact__cod_fact=fact.cod_fact)
                 medis_nopos = DetailMediNoPos.objects.filter(fact__cod_fact=fact.cod_fact)
                 labos = DetailLabo.objects.filter(fact__cod_fact=fact.cod_fact)
@@ -206,7 +207,6 @@ class CreatorXLSXView(TemplateView):
                 servis = DetailService.objects.filter(fact__cod_fact=fact.cod_fact)
 
                 # totales
-
                 total_medis_pos = sum([detalle.subtotal for detalle in
                                        DetailMedi.objects.filter(fact__cod_fact=fact.cod_fact)])
 
@@ -410,3 +410,241 @@ class CreatorXLSXView(TemplateView):
             workbook.save(response)
             return response
         return render(request, "rdf/creator.html", {'form': my_form})
+
+class GeneratorRIPSView(TemplateView):
+    model = Fact
+    template_name = 'rdf/generator.html'
+    form_class = GeneratorForm
+
+    def create_AF_file(self, dir, cod_hab, nomb_emp, type_id_emp, num_id_emp, factu, f_ini, f_end, cod_eps, nomb_eps, total):
+        f_pa_dir = "".join(f_end.split("/"))
+        ruta = dir+"/AF{}.txt".format(f_pa_dir)
+        os.makedirs(dir, exist_ok=True)
+        with open (ruta, "a") as f:
+            f.write(
+                '{},{},{},{},{},{},{},{},{},{},0,0,0,0,0,0,{}\n'.format(cod_hab, nomb_emp, type_id_emp, num_id_emp, factu,
+                                                                     f_end, f_ini, f_end, cod_eps, nomb_eps, total)
+            )
+            f.close()
+
+    def create_AH_file(self, dir, factu, cod_hab, type_id_pac, num_id_pac, f_ini, num_auto, dx,f_end):
+        f_pa_dir = "".join(f_end.split("/"))
+        ruta = dir+"/AH{}.txt".format(f_pa_dir)
+        os.makedirs(dir, exist_ok=True)
+        with open (ruta, "a") as f:
+            f.write(
+                '{},{},{},{},3,{},16:05,{},13,{},{},{},{},{},{},1,,{},23:59\n'.format(factu, cod_hab, type_id_pac,
+                                                                                      num_id_pac, f_ini, num_auto, dx,
+                                                                                      dx, dx, dx, dx, dx, f_end)
+            )
+            f.close()
+
+    def create_AM_file(self, dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, num_auto, cum, posnopos, nom_mdto,
+                       pre_mdto, can_con_mdto, conc_mdto, cant, val_uni, subtotal):
+        f_pa_dir = "".join(f_end.split("/"))
+        ruta = dir + "/AM{}.txt".format(f_pa_dir)
+        os.makedirs(dir, exist_ok=True)
+        with open(ruta, "a") as f:
+            f.write(
+                '{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n'.format(factu, cod_hab, type_id_pac, num_id_pac, num_auto,
+                                                                     cum, posnopos, nom_mdto, pre_mdto, can_con_mdto,
+                                                                     conc_mdto, cant, val_uni, subtotal)
+
+            )
+            f.close()
+
+    def create_AP_file(self, dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, f_ini, num_auto, cod_proc, dx, subtotal):
+        f_pa_dir = "".join(f_end.split("/"))
+        ruta = dir + "/AP{}.txt".format(f_pa_dir)
+        os.makedirs(dir, exist_ok=True)
+        with open(ruta, "a") as f:
+            f.write(
+                '{},{},{},{},{},{},{},2,1,5,{},,,,{}\n'.format(factu, cod_hab, type_id_pac, num_id_pac, f_ini, num_auto,
+                                                               cod_proc, dx, subtotal)
+
+            )
+            f.close()
+
+    def create_AT_file(self, dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, num_auto, cod_ser, nom_ser, cant,
+                       val_uni, subtotal):
+        f_pa_dir = "".join(f_end.split("/"))
+        ruta = dir + "/AT{}.txt".format(f_pa_dir)
+        os.makedirs(dir, exist_ok=True)
+        with open(ruta, "a") as f:
+            f.write(
+                '{},{},{},{},{},3,{},{},{},{},{}\n'.format(factu, cod_hab, type_id_pac, num_id_pac, num_auto, cod_ser,
+                                                           nom_ser, cant, val_uni, subtotal)
+            )
+            f.close()
+
+    def create_US_file(self, dir, f_end, type_id_pac, num_id_pac, cod_eps, regi, a1, a2, n1, n2, age, mess, gene, dpto, muni, rulurb):
+        f_pa_dir = "".join(f_end.split("/"))
+        ruta = dir + "/US{}.txt".format(f_pa_dir)
+        os.makedirs(dir, exist_ok=True)
+        with open(ruta, "a") as f:
+            f.write(
+                '{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n'.format(type_id_pac, num_id_pac, cod_eps, regi, a1, a2, n1,
+                                                                     n2, age, mess, gene, dpto, muni, rulurb)
+            )
+            f.close()
+
+    def create_CT_file(self, dir, f_end, num_id_emp, file, cant_lines):
+        f_pa_dir = "".join(f_end.split("/"))
+        ruta = dir + "/CT{}.txt".format(f_pa_dir)
+        os.makedirs(dir, exist_ok=True)
+        with open(ruta, "a") as f:
+            f.write(
+                '{},{},{},{}\n'.format(num_id_emp, f_end, file, cant_lines)
+            )
+            f.close()
+
+    def ct_caller(self, dirs_pa_ct, num_id_emp, f_end):
+        f_pa_dir = "".join(f_end.split("/"))
+        for dir in dirs_pa_ct:
+            for prefix in ['AT','AF','US','AM','AP']:
+                file = "{}{}".format(prefix,f_pa_dir)
+                ruta = dir + "/" + file +".txt"
+                fichero = open(ruta, 'r')
+                fichero.readline()
+                fichero.seek(0)
+                cant_lines = len(fichero.readlines())
+                fichero.close()
+                self.create_CT_file(dir, f_end, num_id_emp, file, cant_lines)
+
+
+
+    def post(self, request):
+        my_form = GeneratorForm(request.POST)
+        #if my_form.is_valid():
+        facts = Fact.objects.all()
+        patients = []
+        # ----------------------------------------------------------
+        dirs_pa_ct = []
+        num_id_emp = 0
+        f_end = ""
+
+        for fact in facts:
+
+            # obtención de datos
+            medis_pos = DetailMedi.objects.filter(fact__cod_fact=fact.cod_fact)
+            medis_nopos = DetailMediNoPos.objects.filter(fact__cod_fact=fact.cod_fact)
+            labos = DetailLabo.objects.filter(fact__cod_fact=fact.cod_fact)
+            dispos = DetailDispo.objects.filter(fact__cod_fact=fact.cod_fact)
+            servis = DetailService.objects.filter(fact__cod_fact=fact.cod_fact)
+
+            # totales
+            total_medis_pos = sum([detalle.subtotal for detalle in
+                                   DetailMedi.objects.filter(fact__cod_fact=fact.cod_fact)])
+
+            total_medis_nopos = sum([detalle.subtotal for detalle in
+                                     DetailMediNoPos.objects.filter(fact__cod_fact=fact.cod_fact)])
+            total_labos = sum(
+                [detalle.subtotal for detalle in DetailLabo.objects.filter(fact__cod_fact=fact.cod_fact)])
+
+            total_dispos = sum(
+                [detalle.subtotal for detalle in DetailDispo.objects.filter(fact__cod_fact=fact.cod_fact)])
+
+            total_services = sum(
+                [detalle.subtotal for detalle in DetailService.objects.filter(fact__cod_fact=fact.cod_fact)])
+
+
+            dir = fact.patient.eps.name_rips
+            if dir not in dirs_pa_ct:
+                dirs_pa_ct.append(dir)
+            cod_hab = fact.regional.cod_hab
+            nomb_emp = fact.regional.company.name_rips
+            type_id_emp = fact.regional.company.type_id
+            num_id_emp = fact.regional.company.number_id
+            factu = fact.cod_fact
+            f_ini = fact.cut_ini.strftime("%d/%m/%Y")
+            f_end = fact.cut_end.strftime("%d/%m/%Y")
+            cod_eps = fact.patient.eps.cod_eps
+            type_id_pac = fact.patient.type_id
+            num_id_pac = fact.patient.num_id
+            num_auto = fact.aut_number
+            dx = fact.patient.diagnostic.cod_dx
+
+            total = 0
+
+
+            if fact.patient.num_id not in patients:
+                patients.append(fact.patient.num_id)
+                regi = fact.patient.regimen
+                a1 = fact.patient.first_last_name
+                a2 = fact.patient.second_last_name if fact.patient.second_last_name is not None else ""
+                n1 = fact.patient.first_name
+                n2 = fact.patient.second_name if fact.patient.second_name is not None else ""
+                age = fact.patient.age
+                mess = '1' if fact.patient.age_mess == 'años' else ('2' if fact.patient.age_mess == 'meses' else'3')
+                gene = fact.patient.gene
+                dpto = fact.regional.dpto.codigo
+                muni = fact.regional.municipe.codigo
+                rulurb = fact.regional.urba_rul
+                self.create_US_file(dir, f_end, type_id_pac, num_id_pac, cod_eps, regi, a1, a2, n1, n2, age,
+                                        mess, gene, dpto,muni, rulurb)
+
+            if servis:
+                total += total_services
+                self.create_AH_file(dir, factu, cod_hab, type_id_pac, num_id_pac, f_ini, num_auto, dx, f_end)
+                for servi in servis:
+                    cod_ser = servi.service.codigo
+                    nom_ser = servi.service.name_rips
+                    cant = servi.cant
+                    val_uni = int(servi.price)
+                    subtotal = int(servi.subtotal)
+                    self.create_AT_file(dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, num_auto, cod_ser,
+                                   nom_ser, cant, val_uni, subtotal)
+
+            if medis_pos:
+                total += total_medis_pos
+                for medi in medis_pos:
+                    cum = medi.medicine.cod_cum
+                    nom_mdto = medi.medicine.name_rips
+                    pre_mdto = medi.medicine.presentation.name_rips
+                    can_con_mdto = medi.medicine.cant_concent
+                    conc_mdto = medi.medicine.concentration.name_rips
+                    cant = medi.cant
+                    val_uni = int(medi.price)
+                    subtotal = int(medi.subtotal)
+                    self.create_AM_file(dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, num_auto, cum, 1,
+                                   nom_mdto, pre_mdto, can_con_mdto, conc_mdto, cant, val_uni, subtotal)
+
+            if medis_nopos:
+                total += total_medis_nopos
+                for medi in medis_nopos:
+                    cum = medi.medicine.cod_cum
+                    nom_mdto = medi.medicine.name_rips
+                    pre_mdto = medi.medicine.presentation.name_rips
+                    can_con_mdto = medi.medicine.cant_concent
+                    conc_mdto = medi.medicine.concentration.name_rips
+                    cant = medi.cant
+                    val_uni = int(medi.price)
+                    subtotal = int(medi.subtotal)
+                    self.create_AM_file(dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, num_auto, cum, 2,
+                                   nom_mdto, pre_mdto, can_con_mdto, conc_mdto, cant, val_uni, subtotal)
+
+            if labos:
+                total += total_labos
+                for labo in labos:
+                    cod_proc = labo.laboratory.codigo
+                    subtotal = int(labo.subtotal)
+                    self.create_AP_file(dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, f_ini, num_auto, cod_proc, dx,
+                               subtotal)
+
+            if dispos:
+                total += total_dispos
+                for dispo in dispos:
+                    cod_proc = dispo.dispositive.codigo
+                    subtotal = int(dispo.subtotal)
+                    self.create_AP_file(dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, f_ini, num_auto, cod_proc,
+                                        dx, subtotal)
+
+            total = int(total)
+            self.create_AF_file(dir, cod_hab, nomb_emp, type_id_emp, num_id_emp, factu, f_ini, f_end, cod_eps, dir,total)
+
+        self.ct_caller(dirs_pa_ct, num_id_emp, f_end)
+
+
+
+
+        return render(request, "rdf/generator.html", {'form': my_form})
