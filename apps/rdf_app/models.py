@@ -2,7 +2,7 @@ import datetime
 
 from django.db import models
 
-from .choices import CEDULA, NIT, TYPE_ID, URBA, URBA_RUL, GEN
+from apps.rdf_app.choices import CEDULA, NIT, TYPE_ID, URBA, URBA_RUL, GEN, CONTRIBUTIVO, REG
 
 
 class Company(models.Model):
@@ -74,6 +74,8 @@ class Patient(models.Model):
     num_id = models.CharField(max_length=10, default=0)
     born_date = models.DateField(default=datetime.date(2000,1,1))
     diagnostic = models.ForeignKey(Diagnostic, on_delete=models.CASCADE)
+    regimen = models.CharField(max_length=10, choices=REG, default=CONTRIBUTIVO)
+    active = models.BooleanField(default=True)
 
     def _get_age (self):
         tiempo = (datetime.date.today() - self.born_date).days
@@ -128,7 +130,7 @@ class Fact(models.Model):
     cut_end = models.DateField()
     pin_elect = models.PositiveIntegerField(null=True, blank=True)
     validation = models.PositiveIntegerField(null=True, blank=True)
-    cero1to6 = models.IntegerField()
+    #cero1to6 = models.IntegerField()
 
     def __str__(self):
         return self.cod_fact+' - '+str(self.patient)
@@ -181,7 +183,7 @@ class DetailMedi(models.Model):
 class DetailMediNoPos(models.Model):
     fact = models.ForeignKey(Fact, on_delete=models.CASCADE)
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
-    mipres = models.CharField(max_length=50)
+    mipres = models.CharField(max_length=50, null=True, blank=True)
     dosis = models.CharField(max_length=50)
     cant = models.IntegerField()
 

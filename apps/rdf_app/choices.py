@@ -6,6 +6,7 @@ NIT = 'NI'
 URBA = 'U'
 TABLETA = 'T' # ojo cambiar
 GRAJEA = 'G'
+CONTRIBUTIVO = '1'
 
 
 
@@ -25,4 +26,9 @@ URBA_RUL = (
 GEN = (
     ('M', 'Masculino'),
     ('F', 'Femenino')
+)
+
+REG = (
+    (CONTRIBUTIVO,'Contributivo'),
+    ('2','Subsidiado')
 )

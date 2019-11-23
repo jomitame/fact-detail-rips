@@ -33,3 +33,8 @@ class CreatorForm(forms.Form):
             raise forms.ValidationError("Fecha final no puede ser mayor a hoy")
 
         return cleaned_data
+
+
+class GeneratorForm(forms.Form):
+
+    veri = forms.CheckboxInput()
