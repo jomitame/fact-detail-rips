@@ -7,6 +7,7 @@ from django.shortcuts import render
 from openpyxl import Workbook
 from django.http import HttpResponse
 from django.views.generic import TemplateView
+from openpyxl.drawing.image import Image
 
 from apps.rdf_app.models import Fact, DetailMedi, DetailLabo, DetailDispo, DetailService, DetailMediNoPos, Patient
 from apps.rdf_app.forms import CreatorForm, GeneratorForm
@@ -40,6 +41,12 @@ class CreatorXLSXView(TemplateView):
             ws.cell(row=fl, column=2).value = args[1]
             ws.cell(row=fl, column=2).alignment = give_style('enc-sinwrap').get('alineacion')
             ws.cell(row=fl, column=2).font = give_style('encabezado').get('fuente')
+            if type==3:
+                ws.cell(row=fl, column=3).value = args[7]
+                ws.cell(row=fl, column=3).alignment = give_style('enc-sinwrap').get('alineacion')
+                ws.cell(row=fl, column=3).font = give_style('encabezado').get('fuente')
+            else:
+                ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=3)
             ws.cell(row=fl, column=4).value = args[2]
             ws.cell(row=fl, column=4).alignment = give_style('enc-sinwrap').get('alineacion')
             ws.cell(row=fl, column=4).font = give_style('encabezado').get('fuente')
@@ -63,6 +70,7 @@ class CreatorXLSXView(TemplateView):
                     ws.cell(row=fl, column=2).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a3']))
                     ws.cell(row=fl, column=2).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=2).alignment = give_style('normal-wrap').get('alineacion')
+                    ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=3)
                     ws.cell(row=fl, column=4).value = str(getattr(elem, kwargs['a4']))
                     ws.cell(row=fl, column=4).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=4).alignment = give_style('title').get('alineacion')
@@ -88,6 +96,7 @@ class CreatorXLSXView(TemplateView):
                     ws.cell(row=fl, column=2).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a2']))
                     ws.cell(row=fl, column=2).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=2).alignment = give_style('normal-wrap').get('alineacion')
+                    ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=3)
                     ws.cell(row=fl, column=4).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a3']))
                     ws.cell(row=fl, column=4).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=4).alignment = give_style('title').get('alineacion')
@@ -104,6 +113,36 @@ class CreatorXLSXView(TemplateView):
                     ws.cell(row=fl, column=7).alignment = give_style('total').get('alineacion')
                     ws.cell(row=fl, column=7).border = give_style('block-right').get('borde')
                     fl += 1
+            elif type==3:
+                for elem in mylist:
+                    ws.cell(row=fl, column=1).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a2']))
+                    ws.cell(row=fl, column=1).font = give_style('normal').get('fuente')
+                    ws.cell(row=fl, column=1).alignment = give_style('title').get('alineacion')
+                    ws.cell(row=fl, column=1).border = give_style('block-left').get('borde')
+                    ws.cell(row=fl, column=2).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a3']))
+                    ws.cell(row=fl, column=2).font = give_style('normal').get('fuente')
+                    ws.cell(row=fl, column=2).alignment = give_style('normal-wrap').get('alineacion')
+                    ws.cell(row=fl, column=3).value = '{}'.format(str(getattr(elem, kwargs['a8'])) if
+                        getattr(elem, kwargs['a8']) is not None else '-')
+                    ws.cell(row=fl, column=3).font = give_style('normal').get('fuente')
+                    ws.cell(row=fl, column=3).alignment = give_style('title').get('alineacion')
+                    ws.cell(row=fl, column=4).value = str(getattr(elem, kwargs['a4']))
+                    ws.cell(row=fl, column=4).font = give_style('normal').get('fuente')
+                    ws.cell(row=fl, column=4).alignment = give_style('title').get('alineacion')
+                    ws.cell(row=fl, column=5).value = int(getattr(elem, kwargs['a5']))
+                    ws.cell(row=fl, column=5).font = give_style('normal').get('fuente')
+                    ws.cell(row=fl, column=5).alignment = give_style('title').get('alineacion')
+                    ws.cell(row=fl, column=6).value = round(float(getattr(elem, kwargs['a6'])), 2)
+                    ws.cell(row=fl, column=6).font = give_style('normal').get('fuente')
+                    ws.cell(row=fl, column=6).number_format = '"$"#,##0_);("$"#,##0)'
+                    ws.cell(row=fl, column=6).alignment = give_style('total').get('alineacion')
+                    ws.cell(row=fl, column=7).value = round(float(getattr(elem, kwargs['a7'])), 2)
+                    ws.cell(row=fl, column=7).font = give_style('normal').get('fuente')
+                    ws.cell(row=fl, column=7).number_format = '"$"#,##0_);("$"#,##0)'
+                    ws.cell(row=fl, column=7).alignment = give_style('total').get('alineacion')
+                    ws.cell(row=fl, column=7).border = give_style('block-right').get('borde')
+                    fl += 1
+
             ws.cell(row=fl, column=1).value = args[6]
             ws.cell(row=fl, column=1).fill = give_style('total').get('relleno')
             ws.cell(row=fl, column=1).alignment = give_style('total').get('alineacion')
@@ -249,10 +288,10 @@ class CreatorXLSXView(TemplateView):
                 #frs_line += 1
                 # Medicamentos NO POS
                 titulos = ['CODIGO CUM', 'MEDICAMENTOS', 'DOSIS', 'CANTIDAD', 'VALOR UNITARIO', 'VALOR TOTAL',
-                           'TOTAL SERVICIO MEDICAMENTOS NO POS: ']
+                           'TOTAL SERVICIO MEDICAMENTOS NO POS: ','MIPRES']
                 valores = {'a1': 'medicine', 'a2': 'cod_cum', 'a3': 'name', 'a4': 'dosis', 'a5': 'cant', 'a6': 'price',
-                           'a7': 'subtotal'}
-                frs_line = self.fill_detail(1, 'SERVICIO MEDICAMENTOS NO POS', medis_nopos, worksheet,
+                           'a7': 'subtotal', 'a8':'mipres'}
+                frs_line = self.fill_detail(3, 'SERVICIO MEDICAMENTOS NO POS', medis_nopos, worksheet,
                                             frs_line,
                                             total_medis_nopos, *titulos, **valores)
 
@@ -396,6 +435,18 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=7).border = give_style('block-btmrgt').get('borde')
                 worksheet.cell(row=frs_line, column=7).font = give_style('enc-sinwrap').get('fuente')
                 worksheet.cell(row=frs_line, column=7).alignment = give_style('total').get('alineacion')
+
+                worksheet.column_dimensions['A'].width = 12
+                worksheet.column_dimensions['B'].width = 20
+                worksheet.column_dimensions['C'].width = 9
+                worksheet.column_dimensions['D'].width = 7
+                worksheet.column_dimensions['E'].width = 7
+                worksheet.column_dimensions['F'].width = 12
+                worksheet.column_dimensions['G'].width = 9
+                img = Image("messer-logo.png")
+                img.width = 120
+                img.height = 60
+                worksheet.add_image(img, 'A2')
 
 
             workbook.remove(sheet_temp)

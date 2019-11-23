@@ -183,7 +183,7 @@ class DetailMedi(models.Model):
 class DetailMediNoPos(models.Model):
     fact = models.ForeignKey(Fact, on_delete=models.CASCADE)
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
-    mipres = models.CharField(max_length=50)
+    mipres = models.CharField(max_length=50, null=True, blank=True)
     dosis = models.CharField(max_length=50)
     cant = models.IntegerField()
 
