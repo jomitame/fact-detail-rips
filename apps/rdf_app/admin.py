@@ -43,30 +43,50 @@ class factAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
+    ordering = ('name',)
     list_display = ('name',)
     search_fields = ('name',)
 
 @admin.register(Medicine)
 class MedicineAdmin(admin.ModelAdmin):
+    ordering = ('name',)
     list_display = ('name',)
-    search_fields = ('name','presentation')
+    search_fields = ('name',)
 
 @admin.register(Dispositive)
 class DispositiveAdmin(admin.ModelAdmin):
+    ordering = ('name',)
     list_display = ('name',)
     search_fields = ('name',)
 
 @admin.register(Laboratory)
 class LaboratoryAdmin(admin.ModelAdmin):
+    ordering = ('name',)
     list_display = ('name',)
     search_fields = ('name',)
 
 @admin.register(Patient)
 class PatientAdmin(admin.ModelAdmin):
+    ordering = ('first_name',)
     list_display = ('first_name',)
     search_fields = ('first_name',)
     readonly_fields = ('age','age_mess')
 
+@admin.register(PriceMedicine)
+class PriceMedicine(admin.ModelAdmin):
+    ordering = ('medto__name_rips',)
+
+@admin.register(PriceLabo)
+class PriceMedicine(admin.ModelAdmin):
+    ordering = ('labo__name_rips',)
+
+@admin.register(PriceDispositive)
+class PriceMedicine(admin.ModelAdmin):
+    ordering = ('dispo__name_rips',)
+
+@admin.register(PriceService)
+class PriceMedicine(admin.ModelAdmin):
+    ordering = ('servi__name_rips',)
 '''
 class PapientAdmin(admin.ModelAdmin):
     list_display = ['first_name', 'first_last_name','age', 'age_mess']
@@ -88,8 +108,8 @@ admin.site.register(Presentation)
 admin.site.register(Concentration)
 admin.site.register(Departament)
 admin.site.register(Municipe)
-admin.site.register(PriceMedicine)
-admin.site.register(PriceLabo)
-admin.site.register(PriceDispositive)
-admin.site.register(PriceService)
+#admin.site.register(PriceMedicine)
+#admin.site.register(PriceLabo)
+#admin.site.register(PriceDispositive)
+#admin.site.register(PriceService)
 

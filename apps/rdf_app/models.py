@@ -138,12 +138,12 @@ class Fact(models.Model):
 
 class Medicine(models.Model):
     cod_cum = models.CharField(max_length=50, unique=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=200)
     name_rips = models.CharField(max_length=50)
     is_pos = models.BooleanField()
     presentation = models.ForeignKey(Presentation, on_delete=models.CASCADE)
     concentration = models.ForeignKey(Concentration, on_delete=models.CASCADE)
-    cant_concent = models.PositiveIntegerField()
+    cant_concent = models.FloatField()
     #price = models.FloatField(default=0.0)
 
     def __str__(self):
@@ -159,7 +159,7 @@ class PriceMedicine(models.Model):
         unique_together = ('eps', 'medto')
 
     def __str__(self):
-        return self.eps.name_rips+' - '+self.medto.name_rips
+        return self.medto.name_rips+' - '+self.eps.name_rips
 
 
 class DetailMedi(models.Model):
@@ -183,6 +183,7 @@ class DetailMedi(models.Model):
 class DetailMediNoPos(models.Model):
     fact = models.ForeignKey(Fact, on_delete=models.CASCADE)
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    autorization = models.CharField(max_length=50, blank=True, null=True)
     mipres = models.CharField(max_length=50, null=True, blank=True)
     dosis = models.CharField(max_length=50)
     cant = models.IntegerField()
@@ -221,7 +222,7 @@ class PriceDispositive(models.Model):
         unique_together = ('eps', 'dispo')
 
     def __str__(self):
-        return self.eps.name_rips+' - '+self.dispo.name_rips
+        return self.dispo.name_rips+' - '+self.eps.name_rips
 
 
 
@@ -263,7 +264,7 @@ class PriceLabo(models.Model):
         unique_together = ('eps', 'labo')
 
     def __str__(self):
-        return self.eps.name_rips+' - '+self.labo.name_rips
+        return self.labo.name_rips+' - '+self.eps.name_rips
 
 
 class DetailLabo(models.Model):
@@ -305,7 +306,7 @@ class PriceService(models.Model):
         unique_together = ('eps', 'servi')
 
     def __str__(self):
-        return self.eps.name_rips+' - '+self.servi.name_rips
+        return self.servi.name_rips+' - '+self.eps.name_rips
 
 
 class DetailService(models.Model):

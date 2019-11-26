@@ -665,6 +665,7 @@ class GeneratorRIPSView(TemplateView):
                 for medi in medis_nopos:
                     cum = medi.medicine.cod_cum
                     nom_mdto = medi.medicine.name_rips
+                    num_auto = medi.autorization
                     pre_mdto = medi.medicine.presentation.name_rips
                     can_con_mdto = medi.medicine.cant_concent
                     conc_mdto = medi.medicine.concentration.name_rips
