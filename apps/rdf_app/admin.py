@@ -13,25 +13,25 @@ class servi_inline(admin.TabularInline):
 class medi_inline(admin.TabularInline):
     model =  (DetailMedi)
     extra = 0
-    readonly_fields = ('subtotal',)
+    readonly_fields = ('price','subtotal',)
     autocomplete_fields = ('medicine',)
 
 class medinopos_inline(admin.TabularInline):
     model = (DetailMediNoPos)
     extra = 0
-    readonly_fields = ('subtotal',)
+    readonly_fields = ('price','subtotal',)
     autocomplete_fields = ('medicine',)
 
 class labo_inline(admin.TabularInline):
     model = (DetailLabo)
     extra = 0
-    readonly_fields = ('subtotal',)
+    readonly_fields = ('price','subtotal',)
     autocomplete_fields = ('laboratory',)
 
 class dispo_inline(admin.TabularInline):
     model = (DetailDispo)
     extra = 0
-    readonly_fields = ('subtotal',)
+    readonly_fields = ('price','subtotal',)
     autocomplete_fields = ('dispositive',)
 
 
@@ -39,6 +39,7 @@ class dispo_inline(admin.TabularInline):
 class factAdmin(admin.ModelAdmin):
     inlines = (servi_inline, medi_inline, medinopos_inline, dispo_inline, labo_inline, )
     autocomplete_fields = ('patient',)
+    ordering = ('cod_fact',)
 
 
 @admin.register(Service)
