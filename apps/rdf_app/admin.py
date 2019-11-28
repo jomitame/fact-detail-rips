@@ -7,7 +7,7 @@ from .models import Company, Regional, EPS, Diagnostic, Patient, Medicine, Fact,
 class servi_inline(admin.TabularInline):
     model = (DetailService)
     extra = 0
-    readonly_fields = ('subtotal',)
+    readonly_fields = ('price','subtotal',)
     autocomplete_fields = ('service',)
 
 class medi_inline(admin.TabularInline):
@@ -76,18 +76,22 @@ class PatientAdmin(admin.ModelAdmin):
 @admin.register(PriceMedicine)
 class PriceMedicine(admin.ModelAdmin):
     ordering = ('medto__name_rips',)
+    search_fields = ('medto__name_rips',)
 
 @admin.register(PriceLabo)
 class PriceMedicine(admin.ModelAdmin):
     ordering = ('labo__name_rips',)
+    search_fields = ('labo__name_rips',)
 
 @admin.register(PriceDispositive)
 class PriceMedicine(admin.ModelAdmin):
     ordering = ('dispo__name_rips',)
+    search_fields = ('dispo__name_rips',)
 
 @admin.register(PriceService)
 class PriceMedicine(admin.ModelAdmin):
     ordering = ('servi__name_rips',)
+    search_fields = ('servi__name_rips',)
 '''
 class PapientAdmin(admin.ModelAdmin):
     list_display = ['first_name', 'first_last_name','age', 'age_mess']
