@@ -598,8 +598,8 @@ class GeneratorRIPSView(TemplateView):
             total_services = sum(
                 [detalle.subtotal for detalle in DetailService.objects.filter(fact__cod_fact=fact.cod_fact)])
 
-
-            dir = fact.patient.eps.name_rips
+            eps = fact.patient.eps.name_rips
+            dir = eps+"/"+fact.regional.name_rips
             if dir not in dirs_pa_ct:
                 dirs_pa_ct.append(dir)
             cod_hab = fact.regional.cod_hab
@@ -692,7 +692,7 @@ class GeneratorRIPSView(TemplateView):
                                         dx, subtotal)
 
             total = int(total)
-            self.create_AF_file(dir, cod_hab, nomb_emp, type_id_emp, num_id_emp, factu, f_ini, f_end, cod_eps, dir,total)
+            self.create_AF_file(dir, cod_hab, nomb_emp, type_id_emp, num_id_emp, factu, f_ini, f_end, cod_eps, eps,total)
 
         self.ct_caller(dirs_pa_ct, num_id_emp, f_end)
 
