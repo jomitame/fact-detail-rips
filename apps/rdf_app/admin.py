@@ -40,7 +40,7 @@ class factAdmin(admin.ModelAdmin):
     inlines = (servi_inline, medi_inline, medinopos_inline, dispo_inline, labo_inline, )
     autocomplete_fields = ('patient',)
     ordering = ('cod_fact',)
-
+    #list_display = ['id', 'cod_fact']
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
@@ -74,29 +74,30 @@ class PatientAdmin(admin.ModelAdmin):
     readonly_fields = ('age','age_mess')
 
 @admin.register(PriceMedicine)
-class PriceMedicine(admin.ModelAdmin):
+class PriceMedicineAdmin(admin.ModelAdmin):
     ordering = ('medto__name_rips',)
     search_fields = ('medto__name_rips',)
 
 @admin.register(PriceLabo)
-class PriceMedicine(admin.ModelAdmin):
+class PriceLaboAdmin(admin.ModelAdmin):
     ordering = ('labo__name_rips',)
     search_fields = ('labo__name_rips',)
 
 @admin.register(PriceDispositive)
-class PriceMedicine(admin.ModelAdmin):
+class PriceDispositiveAdmin(admin.ModelAdmin):
     ordering = ('dispo__name_rips',)
     search_fields = ('dispo__name_rips',)
 
 @admin.register(PriceService)
-class PriceMedicine(admin.ModelAdmin):
+class PriceServiceAdmin(admin.ModelAdmin):
     ordering = ('servi__name_rips',)
     search_fields = ('servi__name_rips',)
-'''
-class PapientAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'first_last_name','age', 'age_mess']
 
-'''
+@admin.register(Municipe)
+class MunicipeAdmin(admin.ModelAdmin):
+    list_display = ['name', 'codigo']
+
+
 
 
 
@@ -112,7 +113,7 @@ admin.site.register(DetailService)
 admin.site.register(Presentation)
 admin.site.register(Concentration)
 admin.site.register(Departament)
-admin.site.register(Municipe)
+#admin.site.register(Municipe)
 #admin.site.register(PriceMedicine)
 #admin.site.register(PriceLabo)
 #admin.site.register(PriceDispositive)

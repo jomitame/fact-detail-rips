@@ -552,15 +552,18 @@ class GeneratorRIPSView(TemplateView):
     def ct_caller(self, dirs_pa_ct, num_id_emp, f_end):
         f_pa_dir = "".join(f_end.split("/"))
         for dir in dirs_pa_ct:
-            for prefix in ['AT','AF','US','AM','AP']:
+            for prefix in ['AF','AH','AM', 'AP','AT','US']:
                 file = "{}{}".format(prefix,f_pa_dir)
                 ruta = dir + "/" + file +".txt"
-                fichero = open(ruta, 'r')
-                fichero.readline()
-                fichero.seek(0)
-                cant_lines = len(fichero.readlines())
-                fichero.close()
-                self.create_CT_file(dir, f_end, num_id_emp, file, cant_lines)
+                try:
+                    fichero = open(ruta, 'r')
+                    fichero.readline()
+                    fichero.seek(0)
+                    cant_lines = len(fichero.readlines())
+                    fichero.close()
+                    self.create_CT_file(dir, f_end, num_id_emp, file, cant_lines)
+                except:
+                    pass
 
 
 
@@ -652,28 +655,14 @@ class GeneratorRIPSView(TemplateView):
                     cum = medi.medicine.cod_cum
                     nom_mdto = medi.medicine.name_rips
                     pre_mdto = medi.medicine.presentation.name_rips
-                    can_con_mdto = medi.medicine.cant_concent
+                    can_con_mdto = int(medi.medicine.cant_concent)
                     conc_mdto = medi.medicine.concentration.name_rips
-                    cant = medi.cant
+                    cant = int(medi.cant)
                     val_uni = int(medi.price)
                     subtotal = int(medi.subtotal)
                     self.create_AM_file(dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, num_auto, cum, 1,
                                    nom_mdto, pre_mdto, can_con_mdto, conc_mdto, cant, val_uni, subtotal)
 
-            if medis_nopos:
-                total += total_medis_nopos
-                for medi in medis_nopos:
-                    cum = medi.medicine.cod_cum
-                    nom_mdto = medi.medicine.name_rips
-                    num_auto = medi.autorization
-                    pre_mdto = medi.medicine.presentation.name_rips
-                    can_con_mdto = medi.medicine.cant_concent
-                    conc_mdto = medi.medicine.concentration.name_rips
-                    cant = medi.cant
-                    val_uni = int(medi.price)
-                    subtotal = int(medi.subtotal)
-                    self.create_AM_file(dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, num_auto, cum, 2,
-                                   nom_mdto, pre_mdto, can_con_mdto, conc_mdto, cant, val_uni, subtotal)
 
             if labos:
                 total += total_labos
@@ -690,6 +679,23 @@ class GeneratorRIPSView(TemplateView):
                     subtotal = int(dispo.subtotal)
                     self.create_AP_file(dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, f_ini, num_auto, cod_proc,
                                         dx, subtotal)
+
+
+            if medis_nopos:
+                total += total_medis_nopos
+                for medi in medis_nopos:
+                    cum = medi.medicine.cod_cum
+                    nom_mdto = medi.medicine.name_rips
+                    num_auto = medi.autorization# ------------------------------------------------->>>>>>>>>>>>
+                    pre_mdto = medi.medicine.presentation.name_rips
+                    can_con_mdto = int(medi.medicine.cant_concent)
+                    conc_mdto = medi.medicine.concentration.name_rips
+                    cant = int(medi.cant)
+                    val_uni = int(medi.price)
+                    subtotal = int(medi.subtotal)
+                    self.create_AM_file(dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, num_auto, cum, 2,
+                                   nom_mdto, pre_mdto, can_con_mdto, conc_mdto, cant, val_uni, subtotal)
+
 
             total = int(total)
             self.create_AF_file(dir, cod_hab, nomb_emp, type_id_emp, num_id_emp, factu, f_ini, f_end, cod_eps, eps,total)
