@@ -130,7 +130,7 @@ class Fact(models.Model):
     cut_end = models.DateField()
     pin_elect = models.PositiveIntegerField(null=True, blank=True)
     validation = models.PositiveIntegerField(null=True, blank=True)
-    #cero1to6 = models.IntegerField()
+
 
     def __str__(self):
         return self.cod_fact+' - '+str(self.patient)

@@ -2,7 +2,7 @@ from datetime import datetime
 from io import open
 import os
 
-from django.db.models import Sum, F, FloatField, Q
+#from django.db.models import Sum, F, FloatField, Q
 from django.shortcuts import render
 from openpyxl import Workbook
 from django.http import HttpResponse
@@ -468,7 +468,9 @@ class GeneratorRIPSView(TemplateView):
     form_class = GeneratorForm
 
     def create_AF_file(self, dir, cod_hab, nomb_emp, type_id_emp, num_id_emp, factu, f_ini, f_end, cod_eps, nomb_eps, total):
-        f_pa_dir = "".join(f_end.split("/"))
+        f_pa_dir = f_end.split("/")
+        f_pa_dir[-1] = f_pa_dir[-1][-2:]
+        f_pa_dir = "".join(f_pa_dir)
         ruta = dir+"/AF{}.txt".format(f_pa_dir)
         os.makedirs(dir, exist_ok=True)
         with open (ruta, "a") as f:
@@ -479,7 +481,9 @@ class GeneratorRIPSView(TemplateView):
             f.close()
 
     def create_AH_file(self, dir, factu, cod_hab, type_id_pac, num_id_pac, f_ini, num_auto, dx,f_end):
-        f_pa_dir = "".join(f_end.split("/"))
+        f_pa_dir = f_end.split("/")
+        f_pa_dir[-1] = f_pa_dir[-1][-2:]
+        f_pa_dir = "".join(f_pa_dir)
         ruta = dir+"/AH{}.txt".format(f_pa_dir)
         os.makedirs(dir, exist_ok=True)
         with open (ruta, "a") as f:
@@ -492,7 +496,9 @@ class GeneratorRIPSView(TemplateView):
 
     def create_AM_file(self, dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, num_auto, cum, posnopos, nom_mdto,
                        pre_mdto, can_con_mdto, conc_mdto, cant, val_uni, subtotal):
-        f_pa_dir = "".join(f_end.split("/"))
+        f_pa_dir = f_end.split("/")
+        f_pa_dir[-1] = f_pa_dir[-1][-2:]
+        f_pa_dir = "".join(f_pa_dir)
         ruta = dir + "/AM{}.txt".format(f_pa_dir)
         os.makedirs(dir, exist_ok=True)
         with open(ruta, "a") as f:
@@ -505,7 +511,9 @@ class GeneratorRIPSView(TemplateView):
             f.close()
 
     def create_AP_file(self, dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, f_ini, num_auto, cod_proc, dx, subtotal):
-        f_pa_dir = "".join(f_end.split("/"))
+        f_pa_dir = f_end.split("/")
+        f_pa_dir[-1] = f_pa_dir[-1][-2:]
+        f_pa_dir = "".join(f_pa_dir)
         ruta = dir + "/AP{}.txt".format(f_pa_dir)
         os.makedirs(dir, exist_ok=True)
         with open(ruta, "a") as f:
@@ -518,7 +526,9 @@ class GeneratorRIPSView(TemplateView):
 
     def create_AT_file(self, dir, f_end, factu, cod_hab, type_id_pac, num_id_pac, num_auto, cod_ser, nom_ser, cant,
                        val_uni, subtotal):
-        f_pa_dir = "".join(f_end.split("/"))
+        f_pa_dir = f_end.split("/")
+        f_pa_dir[-1] = f_pa_dir[-1][-2:]
+        f_pa_dir = "".join(f_pa_dir)
         ruta = dir + "/AT{}.txt".format(f_pa_dir)
         os.makedirs(dir, exist_ok=True)
         with open(ruta, "a") as f:
@@ -529,7 +539,9 @@ class GeneratorRIPSView(TemplateView):
             f.close()
 
     def create_US_file(self, dir, f_end, type_id_pac, num_id_pac, cod_eps, regi, a1, a2, n1, n2, age, mess, gene, dpto, muni, rulurb):
-        f_pa_dir = "".join(f_end.split("/"))
+        f_pa_dir = f_end.split("/")
+        f_pa_dir[-1] = f_pa_dir[-1][-2:]
+        f_pa_dir = "".join(f_pa_dir)
         ruta = dir + "/US{}.txt".format(f_pa_dir)
         os.makedirs(dir, exist_ok=True)
         with open(ruta, "a") as f:
@@ -540,7 +552,9 @@ class GeneratorRIPSView(TemplateView):
             f.close()
 
     def create_CT_file(self, dir, f_end, num_id_emp, file, cant_lines):
-        f_pa_dir = "".join(f_end.split("/"))
+        f_pa_dir = f_end.split("/")
+        f_pa_dir[-1] = f_pa_dir[-1][-2:]
+        f_pa_dir = "".join(f_pa_dir)
         ruta = dir + "/CT{}.txt".format(f_pa_dir)
         os.makedirs(dir, exist_ok=True)
         with open(ruta, "a") as f:
@@ -550,7 +564,9 @@ class GeneratorRIPSView(TemplateView):
             f.close()
 
     def ct_caller(self, dirs_pa_ct, num_id_emp, f_end):
-        f_pa_dir = "".join(f_end.split("/"))
+        f_pa_dir = f_end.split("/")
+        f_pa_dir[-1] = f_pa_dir[-1][-2:]
+        f_pa_dir = "".join(f_pa_dir)
         for dir in dirs_pa_ct:
             for prefix in ['AF','AH','AM', 'AP','AT','US']:
                 file = "{}{}".format(prefix,f_pa_dir)
@@ -701,7 +717,6 @@ class GeneratorRIPSView(TemplateView):
             self.create_AF_file(dir, cod_hab, nomb_emp, type_id_emp, num_id_emp, factu, f_ini, f_end, cod_eps, eps,total)
 
         self.ct_caller(dirs_pa_ct, num_id_emp, f_end)
-
 
 
 
