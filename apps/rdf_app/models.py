@@ -131,6 +131,8 @@ class Fact(models.Model):
     pin_elect = models.PositiveIntegerField(null=True, blank=True)
     validation = models.PositiveIntegerField(null=True, blank=True)
 
+    class Meta:
+        ordering = ('cod_fact',)
 
     def __str__(self):
         return self.cod_fact+' - '+str(self.patient)
@@ -145,6 +147,9 @@ class Medicine(models.Model):
     concentration = models.ForeignKey(Concentration, on_delete=models.CASCADE)
     cant_concent = models.FloatField()
     #price = models.FloatField(default=0.0)
+
+    class Meta:
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
@@ -168,6 +173,9 @@ class DetailMedi(models.Model):
     dosis = models.CharField(max_length=50)
     cant = models.IntegerField()
 
+    class Meta:
+        ordering = ('medicine__name',)
+
     def __str__(self):
         return str(self.fact)+' - '+str(self.medicine)
 
@@ -188,6 +196,9 @@ class DetailMediNoPos(models.Model):
     dosis = models.CharField(max_length=50)
     cant = models.IntegerField()
 
+    class Meta:
+        ordering = ('medicine__name',)
+
     def __str__(self):
         return str(self.fact)+' - '+str(self.medicine)+' No Pos'
 
@@ -207,7 +218,9 @@ class Dispositive(models.Model):
     codigo = models.CharField(max_length=10, default=0)
     is_pos = models.BooleanField()
     especial = models.BooleanField(default=True)
-    #price = models.FloatField(default=0.0)
+
+    class Meta:
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
@@ -231,6 +244,9 @@ class DetailDispo(models.Model):
     dispositive = models.ForeignKey(Dispositive, on_delete=models.CASCADE)
     cant = models.IntegerField()
 
+    class Meta:
+        ordering = ('dispositive__name',)
+
     def __str__(self):
         return str(self.fact)+' - '+str(self.dispositive)
 
@@ -249,7 +265,9 @@ class Laboratory(models.Model):
     name = models.CharField(max_length=100)
     name_rips = models.CharField(max_length=50, null=True)
     codigo = models.CharField(max_length=100)
-    #price = models.FloatField()
+
+    class Meta:
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
@@ -272,6 +290,9 @@ class DetailLabo(models.Model):
     laboratory = models.ForeignKey(Laboratory, on_delete=models.CASCADE)
     cant = models.IntegerField()
 
+    class Meta:
+        ordering = ('laboratory__name',)
+
     def __str__(self):
         return str(self.fact) + ' - ' + str(self.laboratory)
 
@@ -290,7 +311,9 @@ class Service(models.Model):
     name = models.CharField(max_length=100)
     name_rips = models.CharField(max_length=100)
     codigo = models.CharField(max_length=100)
-    #price = models.FloatField()
+
+    class Meta:
+        ordering = ('name',)
 
 
     def __str__(self):
@@ -313,6 +336,9 @@ class DetailService(models.Model):
     fact = models.ForeignKey(Fact, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     cant = models.IntegerField()
+
+    class Meta:
+        ordering = ('service__name',)
 
     def __str__(self):
         return str(self.fact) + ' - ' + str(self.service)
