@@ -32,7 +32,7 @@ class CreatorXLSXView(TemplateView):
             ws.cell(row=fl, column=1).alignment = give_style('title').get('alineacion')
             ws.cell(row=fl, column=1).font = give_style('title').get('fuente')
             ws.cell(row=fl, column=1).border = give_style('uniblock-top').get('borde')
-            ws.merge_cells(start_row=fl, start_column=1, end_row=fl, end_column=7)
+            ws.merge_cells(start_row=fl, start_column=1, end_row=fl, end_column=8)
             fl += 1
             ws.cell(row=fl, column=1).value = args[0]
             ws.cell(row=fl, column=1).alignment = give_style('enc-sinwrap').get('alineacion')
@@ -45,21 +45,26 @@ class CreatorXLSXView(TemplateView):
                 ws.cell(row=fl, column=3).value = args[7]
                 ws.cell(row=fl, column=3).alignment = give_style('enc-sinwrap').get('alineacion')
                 ws.cell(row=fl, column=3).font = give_style('encabezado').get('fuente')
+
+                ws.cell(row=fl, column=4).value = args[8]
+                ws.cell(row=fl, column=4).alignment = give_style('enc-sinwrap').get('alineacion')
+                ws.cell(row=fl, column=4).font = give_style('encabezado').get('fuente')
             else:
-                ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=3)
-            ws.cell(row=fl, column=4).value = args[2]
-            ws.cell(row=fl, column=4).alignment = give_style('enc-sinwrap').get('alineacion')
-            ws.cell(row=fl, column=4).font = give_style('encabezado').get('fuente')
-            ws.cell(row=fl, column=5).value = args[3]
+                pass
+                # ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=3)
+            ws.cell(row=fl, column=5).value = args[2]
             ws.cell(row=fl, column=5).alignment = give_style('enc-sinwrap').get('alineacion')
             ws.cell(row=fl, column=5).font = give_style('encabezado').get('fuente')
-            ws.cell(row=fl, column=6).value = args[4]
+            ws.cell(row=fl, column=6).value = args[3]
             ws.cell(row=fl, column=6).alignment = give_style('enc-sinwrap').get('alineacion')
             ws.cell(row=fl, column=6).font = give_style('encabezado').get('fuente')
-            ws.cell(row=fl, column=7).value = args[5]
+            ws.cell(row=fl, column=7).value = args[4]
             ws.cell(row=fl, column=7).alignment = give_style('enc-sinwrap').get('alineacion')
             ws.cell(row=fl, column=7).font = give_style('encabezado').get('fuente')
-            ws.cell(row=fl, column=7).border = give_style('block-right').get('borde')
+            ws.cell(row=fl, column=8).value = args[5]
+            ws.cell(row=fl, column=8).alignment = give_style('enc-sinwrap').get('alineacion')
+            ws.cell(row=fl, column=8).font = give_style('encabezado').get('fuente')
+            ws.cell(row=fl, column=8).border = give_style('block-right').get('borde')
             fl += 1
             if type==1:
                 for elem in mylist:
@@ -70,22 +75,22 @@ class CreatorXLSXView(TemplateView):
                     ws.cell(row=fl, column=2).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a3']))
                     ws.cell(row=fl, column=2).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=2).alignment = give_style('normal-wrap').get('alineacion')
-                    ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=3)
-                    ws.cell(row=fl, column=4).value = str(getattr(elem, kwargs['a4']))
-                    ws.cell(row=fl, column=4).font = give_style('normal').get('fuente')
-                    ws.cell(row=fl, column=4).alignment = give_style('title').get('alineacion')
-                    ws.cell(row=fl, column=5).value = int(getattr(elem, kwargs['a5']))
+                    #ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=3)
+                    ws.cell(row=fl, column=5).value = str(getattr(elem, kwargs['a4']))
                     ws.cell(row=fl, column=5).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=5).alignment = give_style('title').get('alineacion')
-                    ws.cell(row=fl, column=6).value = round(float(getattr(elem, kwargs['a6'])), 2)
+                    ws.cell(row=fl, column=6).value = int(getattr(elem, kwargs['a5']))
                     ws.cell(row=fl, column=6).font = give_style('normal').get('fuente')
-                    ws.cell(row=fl, column=6).number_format = '"$"#,##0_);("$"#,##0)'
-                    ws.cell(row=fl, column=6).alignment = give_style('total').get('alineacion')
-                    ws.cell(row=fl, column=7).value = round(float(getattr(elem, kwargs['a7'])), 2)
+                    ws.cell(row=fl, column=6).alignment = give_style('title').get('alineacion')
+                    ws.cell(row=fl, column=7).value = round(float(getattr(elem, kwargs['a6'])), 2)
                     ws.cell(row=fl, column=7).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=7).number_format = '"$"#,##0_);("$"#,##0)'
                     ws.cell(row=fl, column=7).alignment = give_style('total').get('alineacion')
-                    ws.cell(row=fl, column=7).border = give_style('block-right').get('borde')
+                    ws.cell(row=fl, column=8).value = round(float(getattr(elem, kwargs['a7'])), 2)
+                    ws.cell(row=fl, column=8).font = give_style('normal').get('fuente')
+                    ws.cell(row=fl, column=8).number_format = '"$"#,##0_);("$"#,##0)'
+                    ws.cell(row=fl, column=8).alignment = give_style('total').get('alineacion')
+                    ws.cell(row=fl, column=8).border = give_style('block-right').get('borde')
                     fl += 1
             elif type==2:
                 for elem in mylist:
@@ -96,22 +101,22 @@ class CreatorXLSXView(TemplateView):
                     ws.cell(row=fl, column=2).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a2']))
                     ws.cell(row=fl, column=2).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=2).alignment = give_style('normal-wrap').get('alineacion')
-                    ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=3)
-                    ws.cell(row=fl, column=4).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a3']))
-                    ws.cell(row=fl, column=4).font = give_style('normal').get('fuente')
-                    ws.cell(row=fl, column=4).alignment = give_style('title').get('alineacion')
-                    ws.cell(row=fl, column=5).value = int(getattr(elem, kwargs['a4']))
+                    #ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=3)
+                    ws.cell(row=fl, column=5).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a3']))
                     ws.cell(row=fl, column=5).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=5).alignment = give_style('title').get('alineacion')
-                    ws.cell(row=fl, column=6).value = round(float(getattr(elem, kwargs['a5'])), 2)
+                    ws.cell(row=fl, column=6).value = int(getattr(elem, kwargs['a4']))
                     ws.cell(row=fl, column=6).font = give_style('normal').get('fuente')
-                    ws.cell(row=fl, column=6).number_format = '"$"#,##0_);("$"#,##0)'
-                    ws.cell(row=fl, column=6).alignment = give_style('total').get('alineacion')
-                    ws.cell(row=fl, column=7).value = round(float(getattr(elem, kwargs['a6'])), 2)
+                    ws.cell(row=fl, column=6).alignment = give_style('title').get('alineacion')
+                    ws.cell(row=fl, column=7).value = round(float(getattr(elem, kwargs['a5'])), 2)
                     ws.cell(row=fl, column=7).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=7).number_format = '"$"#,##0_);("$"#,##0)'
                     ws.cell(row=fl, column=7).alignment = give_style('total').get('alineacion')
-                    ws.cell(row=fl, column=7).border = give_style('block-right').get('borde')
+                    ws.cell(row=fl, column=8).value = round(float(getattr(elem, kwargs['a6'])), 2)
+                    ws.cell(row=fl, column=8).font = give_style('normal').get('fuente')
+                    ws.cell(row=fl, column=8).number_format = '"$"#,##0_);("$"#,##0)'
+                    ws.cell(row=fl, column=8).alignment = give_style('total').get('alineacion')
+                    ws.cell(row=fl, column=8).border = give_style('block-right').get('borde')
                     fl += 1
             elif type==3:
                 for elem in mylist:
@@ -126,21 +131,27 @@ class CreatorXLSXView(TemplateView):
                         getattr(elem, kwargs['a8']) is not None else '-')
                     ws.cell(row=fl, column=3).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=3).alignment = give_style('title').get('alineacion')
-                    ws.cell(row=fl, column=4).value = str(getattr(elem, kwargs['a4']))
+
+                    ws.cell(row=fl, column=4).value = '{}'.format(str(getattr(elem, kwargs['a9'])) if
+                                                                  getattr(elem, kwargs['a9']) is not None else '-')
                     ws.cell(row=fl, column=4).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=4).alignment = give_style('title').get('alineacion')
-                    ws.cell(row=fl, column=5).value = int(getattr(elem, kwargs['a5']))
+
+                    ws.cell(row=fl, column=5).value = str(getattr(elem, kwargs['a4']))
                     ws.cell(row=fl, column=5).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=5).alignment = give_style('title').get('alineacion')
-                    ws.cell(row=fl, column=6).value = round(float(getattr(elem, kwargs['a6'])), 2)
+                    ws.cell(row=fl, column=6).value = int(getattr(elem, kwargs['a5']))
                     ws.cell(row=fl, column=6).font = give_style('normal').get('fuente')
-                    ws.cell(row=fl, column=6).number_format = '"$"#,##0_);("$"#,##0)'
-                    ws.cell(row=fl, column=6).alignment = give_style('total').get('alineacion')
-                    ws.cell(row=fl, column=7).value = round(float(getattr(elem, kwargs['a7'])), 2)
+                    ws.cell(row=fl, column=6).alignment = give_style('title').get('alineacion')
+                    ws.cell(row=fl, column=7).value = round(float(getattr(elem, kwargs['a6'])), 2)
                     ws.cell(row=fl, column=7).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=7).number_format = '"$"#,##0_);("$"#,##0)'
                     ws.cell(row=fl, column=7).alignment = give_style('total').get('alineacion')
-                    ws.cell(row=fl, column=7).border = give_style('block-right').get('borde')
+                    ws.cell(row=fl, column=8).value = round(float(getattr(elem, kwargs['a7'])), 2)
+                    ws.cell(row=fl, column=8).font = give_style('normal').get('fuente')
+                    ws.cell(row=fl, column=8).number_format = '"$"#,##0_);("$"#,##0)'
+                    ws.cell(row=fl, column=8).alignment = give_style('total').get('alineacion')
+                    ws.cell(row=fl, column=8).border = give_style('block-right').get('borde')
                     fl += 1
 
             ws.cell(row=fl, column=1).value = args[6]
@@ -148,12 +159,12 @@ class CreatorXLSXView(TemplateView):
             ws.cell(row=fl, column=1).alignment = give_style('total').get('alineacion')
             ws.cell(row=fl, column=1).font = give_style('total').get('fuente')
             ws.cell(row=fl, column=1).border = give_style('block-btmlft').get('borde')
-            ws.merge_cells(start_row=fl, start_column=1, end_row=fl, end_column=6)
-            ws.cell(row=fl, column=7).value = round(float(total), 2)
-            ws.cell(row=fl, column=7).font = give_style('normal-bold').get('fuente')
-            ws.cell(row=fl, column=7).alignment = give_style('total').get('alineacion')
-            ws.cell(row=fl, column=7).number_format = '"$"#,##0_);("$"#,##0)'
-            ws.cell(row=fl, column=7).border = give_style('block-btmrgt').get('borde')
+            ws.merge_cells(start_row=fl, start_column=1, end_row=fl, end_column=7)
+            ws.cell(row=fl, column=8).value = round(float(total), 2)
+            ws.cell(row=fl, column=8).font = give_style('normal-bold').get('fuente')
+            ws.cell(row=fl, column=8).alignment = give_style('total').get('alineacion')
+            ws.cell(row=fl, column=8).number_format = '"$"#,##0_);("$"#,##0)'
+            ws.cell(row=fl, column=8).border = give_style('block-btmrgt').get('borde')
             fl += 2
         return fl
 
@@ -174,7 +185,7 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=1).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=1).alignment = give_style('title').get('alineacion')
                 worksheet.cell(row=frs_line, column=1).border = give_style('uniblock-top').get('borde')
-                worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=7)
+                worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=8)
 
                 frs_line += 1
 
@@ -182,7 +193,7 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=1).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=1).alignment = give_style('title').get('alineacion')
                 worksheet.cell(row=frs_line, column=1).border = give_style('uniblock-center').get('borde')
-                worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=7)
+                worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=8)
                 frs_line += 1
 
                 worksheet.cell(row=frs_line, column=1).value = 'Periodo facturado del ' + str(
@@ -190,7 +201,7 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=1).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=1).alignment = give_style('title').get('alineacion')
                 worksheet.cell(row=frs_line, column=1).border = give_style('uniblock-center').get('borde')
-                worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=7)
+                worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=8)
                 frs_line += 1
 
                 worksheet.cell(row=frs_line, column=1).value = str(fact.regional.company.name) + ' NIT: ' + str(
@@ -198,7 +209,7 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=1).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=1).alignment = give_style('title').get('alineacion')
                 worksheet.cell(row=frs_line, column=1).border = give_style('uniblock-center').get('borde')
-                worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=7)
+                worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=8)
                 frs_line += 1
 
                 worksheet.cell(row=frs_line, column=1).value = 'NOMBRE'
@@ -209,11 +220,11 @@ class CreatorXLSXView(TemplateView):
                                                      str(fact.patient.first_last_name), (' ' + str(
                         fact.patient.second_last_name)) if fact.patient.second_last_name is not None else '')
                 worksheet.cell(row=frs_line, column=2).font = give_style('title').get('fuente')
-                worksheet.cell(row=frs_line, column=6).value = 'HC'
-                worksheet.cell(row=frs_line, column=6).font = give_style('title').get('fuente')
-                worksheet.cell(row=frs_line, column=7).value = str(fact.patient.num_id)
+                worksheet.cell(row=frs_line, column=7).value = 'HC'
                 worksheet.cell(row=frs_line, column=7).font = give_style('title').get('fuente')
-                worksheet.cell(row=frs_line, column=7).border = give_style('block-right').get('borde')
+                worksheet.cell(row=frs_line, column=8).value = str(fact.patient.num_id)
+                worksheet.cell(row=frs_line, column=8).font = give_style('title').get('fuente')
+                worksheet.cell(row=frs_line, column=8).border = give_style('block-right').get('borde')
                 frs_line += 1
 
                 worksheet.cell(row=frs_line, column=1).value = 'DIAGNOSTICO'
@@ -221,11 +232,11 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=1).border = give_style('block-left').get('borde')
                 worksheet.cell(row=frs_line, column=2).value = str(fact.patient.diagnostic.name)
                 worksheet.cell(row=frs_line, column=2).font = give_style('title').get('fuente')
-                worksheet.cell(row=frs_line, column=6).value = 'EDAD'
-                worksheet.cell(row=frs_line, column=6).font = give_style('title').get('fuente')
-                worksheet.cell(row=frs_line, column=7).value = str(fact.patient.age)+' '+str(fact.patient.age_mess)
+                worksheet.cell(row=frs_line, column=7).value = 'EDAD'
                 worksheet.cell(row=frs_line, column=7).font = give_style('title').get('fuente')
-                worksheet.cell(row=frs_line, column=7).border = give_style('block-right').get('borde')
+                worksheet.cell(row=frs_line, column=8).value = str(fact.patient.age)+' '+str(fact.patient.age_mess)
+                worksheet.cell(row=frs_line, column=8).font = give_style('title').get('fuente')
+                worksheet.cell(row=frs_line, column=8).border = give_style('block-right').get('borde')
                 frs_line += 1
 
                 worksheet.cell(row=frs_line, column=1).value = 'EPS'
@@ -235,7 +246,7 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=2).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=2).alignment = give_style('normal').get('alineacion')
                 worksheet.cell(row=frs_line, column=2).border = give_style('block-btmrgt').get('borde')
-                worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
+                worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=8)
                 frs_line += 2
 
                 # obtención de datos
@@ -288,9 +299,9 @@ class CreatorXLSXView(TemplateView):
                 #frs_line += 1
                 # Medicamentos NO POS
                 titulos = ['CODIGO CUM', 'MEDICAMENTOS', 'DOSIS', 'CANTIDAD', 'VALOR UNITARIO', 'VALOR TOTAL',
-                           'TOTAL SERVICIO MEDICAMENTOS NO POS: ','MIPRES']
+                           'TOTAL SERVICIO MEDICAMENTOS NO POS: ','MIPRES', 'AUTORIZACION']
                 valores = {'a1': 'medicine', 'a2': 'cod_cum', 'a3': 'name', 'a4': 'dosis', 'a5': 'cant', 'a6': 'price',
-                           'a7': 'subtotal', 'a8':'mipres'}
+                           'a7': 'subtotal', 'a8':'mipres', 'a9':'autorization'}
                 frs_line = self.fill_detail(3, 'SERVICIO MEDICAMENTOS NO POS', medis_nopos, worksheet,
                                             frs_line,
                                             total_medis_nopos, *titulos, **valores)
@@ -328,7 +339,7 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=1).alignment = give_style('title-wrap').get('alineacion')
                 worksheet.cell(row=frs_line, column=1).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=1).border = give_style('uniblock-top').get('borde')
-                worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=7)
+                worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=8)
                 frs_line += 1
                 total_factura = 0
                 worksheet.cell(row=frs_line, column=1).value = 'FECHA'
@@ -338,11 +349,11 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=2).value = 'SERVICIO'
                 worksheet.cell(row=frs_line, column=2).alignment = give_style('title').get('alineacion')
                 worksheet.cell(row=frs_line, column=2).font = give_style('title').get('fuente')
-                worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=6)
-                worksheet.cell(row=frs_line, column=7).value = 'TOTAL'
-                worksheet.cell(row=frs_line, column=7).alignment = give_style('title').get('alineacion')
-                worksheet.cell(row=frs_line, column=7).font = give_style('title').get('fuente')
-                worksheet.cell(row=frs_line, column=7).border = give_style('block-right').get('borde')
+                worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
+                worksheet.cell(row=frs_line, column=8).value = 'TOTAL'
+                worksheet.cell(row=frs_line, column=8).alignment = give_style('title').get('alineacion')
+                worksheet.cell(row=frs_line, column=8).font = give_style('title').get('fuente')
+                worksheet.cell(row=frs_line, column=8).border = give_style('block-right').get('borde')
                 frs_line += 1
                 if servis:
                     worksheet.cell(row=frs_line, column=1).value = str(fact.cut_ini)
@@ -352,12 +363,12 @@ class CreatorXLSXView(TemplateView):
                     worksheet.cell(row=frs_line, column=2).value = 'SERVICIO ESTANCIA HOSPITALARIA'
                     worksheet.cell(row=frs_line, column=2).font = give_style('normal').get('fuente')
                     worksheet.cell(row=frs_line, column=2).alignment = give_style('normal').get('alineacion')
-                    worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=6)
-                    worksheet.cell(row=frs_line, column=7).value = total_services
-                    worksheet.cell(row=frs_line, column=7).font = give_style('total').get('fuente')
-                    worksheet.cell(row=frs_line, column=7).number_format = '"$"#,##0_);("$"#,##0)'
-                    worksheet.cell(row=frs_line, column=7).border = give_style('block-right').get('borde')
-                    worksheet.cell(row=frs_line, column=7).alignment = give_style('total').get('alineacion')
+                    worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
+                    worksheet.cell(row=frs_line, column=8).value = total_services
+                    worksheet.cell(row=frs_line, column=8).font = give_style('total').get('fuente')
+                    worksheet.cell(row=frs_line, column=8).number_format = '"$"#,##0_);("$"#,##0)'
+                    worksheet.cell(row=frs_line, column=8).border = give_style('block-right').get('borde')
+                    worksheet.cell(row=frs_line, column=8).alignment = give_style('total').get('alineacion')
                     total_factura+=total_services
                     frs_line+=1
                 if medis_pos:
@@ -368,12 +379,12 @@ class CreatorXLSXView(TemplateView):
                     worksheet.cell(row=frs_line, column=2).value = 'SERVICIO MEDICAMENTOS POS'
                     worksheet.cell(row=frs_line, column=2).font = give_style('normal').get('fuente')
                     worksheet.cell(row=frs_line, column=2).alignment = give_style('normal').get('alineacion')
-                    worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=6)
-                    worksheet.cell(row=frs_line, column=7).value = total_medis_pos
-                    worksheet.cell(row=frs_line, column=7).font = give_style('total').get('fuente')
-                    worksheet.cell(row=frs_line, column=7).number_format = '"$"#,##0_);("$"#,##0)'
-                    worksheet.cell(row=frs_line, column=7).border = give_style('block-right').get('borde')
-                    worksheet.cell(row=frs_line, column=7).alignment = give_style('total').get('alineacion')
+                    worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
+                    worksheet.cell(row=frs_line, column=8).value = total_medis_pos
+                    worksheet.cell(row=frs_line, column=8).font = give_style('total').get('fuente')
+                    worksheet.cell(row=frs_line, column=8).number_format = '"$"#,##0_);("$"#,##0)'
+                    worksheet.cell(row=frs_line, column=8).border = give_style('block-right').get('borde')
+                    worksheet.cell(row=frs_line, column=8).alignment = give_style('total').get('alineacion')
                     total_factura += total_medis_pos
                     frs_line += 1
                 if medis_nopos:
@@ -384,12 +395,12 @@ class CreatorXLSXView(TemplateView):
                     worksheet.cell(row=frs_line, column=2).value = 'SERVICIO MEDICAMENTOS NO POS'
                     worksheet.cell(row=frs_line, column=2).font = give_style('normal').get('fuente')
                     worksheet.cell(row=frs_line, column=2).alignment = give_style('normal').get('alineacion')
-                    worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=6)
-                    worksheet.cell(row=frs_line, column=7).value = total_medis_nopos
-                    worksheet.cell(row=frs_line, column=7).font = give_style('total').get('fuente')
-                    worksheet.cell(row=frs_line, column=7).number_format = '"$"#,##0_);("$"#,##0)'
-                    worksheet.cell(row=frs_line, column=7).border = give_style('block-right').get('borde')
-                    worksheet.cell(row=frs_line, column=7).alignment = give_style('total').get('alineacion')
+                    worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
+                    worksheet.cell(row=frs_line, column=8).value = total_medis_nopos
+                    worksheet.cell(row=frs_line, column=8).font = give_style('total').get('fuente')
+                    worksheet.cell(row=frs_line, column=8).number_format = '"$"#,##0_);("$"#,##0)'
+                    worksheet.cell(row=frs_line, column=8).border = give_style('block-right').get('borde')
+                    worksheet.cell(row=frs_line, column=8).alignment = give_style('total').get('alineacion')
                     total_factura += total_medis_nopos
                     frs_line += 1
                 if dispos:
@@ -400,12 +411,12 @@ class CreatorXLSXView(TemplateView):
                     worksheet.cell(row=frs_line, column=2).value = 'SERVICIO DISPOSITIVOS MEDICO-QUIRURGICOS'
                     worksheet.cell(row=frs_line, column=2).font = give_style('normal').get('fuente')
                     worksheet.cell(row=frs_line, column=2).alignment = give_style('normal').get('alineacion')
-                    worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=6)
-                    worksheet.cell(row=frs_line, column=7).value = total_dispos
-                    worksheet.cell(row=frs_line, column=7).font = give_style('total').get('fuente')
-                    worksheet.cell(row=frs_line, column=7).number_format = '"$"#,##0_);("$"#,##0)'
-                    worksheet.cell(row=frs_line, column=7).border = give_style('block-right').get('borde')
-                    worksheet.cell(row=frs_line, column=7).alignment = give_style('total').get('alineacion')
+                    worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
+                    worksheet.cell(row=frs_line, column=8).value = total_dispos
+                    worksheet.cell(row=frs_line, column=8).font = give_style('total').get('fuente')
+                    worksheet.cell(row=frs_line, column=8).number_format = '"$"#,##0_);("$"#,##0)'
+                    worksheet.cell(row=frs_line, column=8).border = give_style('block-right').get('borde')
+                    worksheet.cell(row=frs_line, column=8).alignment = give_style('total').get('alineacion')
                     total_factura += total_dispos
                     frs_line += 1
                 if labos:
@@ -416,12 +427,12 @@ class CreatorXLSXView(TemplateView):
                     worksheet.cell(row=frs_line, column=2).value = 'SERVICIO LABORATORIO CLINICO'
                     worksheet.cell(row=frs_line, column=2).font = give_style('normal').get('fuente')
                     worksheet.cell(row=frs_line, column=2).alignment = give_style('normal').get('alineacion')
-                    worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=6)
-                    worksheet.cell(row=frs_line, column=7).value = total_labos
-                    worksheet.cell(row=frs_line, column=7).font = give_style('total').get('fuente')
-                    worksheet.cell(row=frs_line, column=7).number_format = '"$"#,##0_);("$"#,##0)'
-                    worksheet.cell(row=frs_line, column=7).border = give_style('block-right').get('borde')
-                    worksheet.cell(row=frs_line, column=7).alignment = give_style('total').get('alineacion')
+                    worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
+                    worksheet.cell(row=frs_line, column=8).value = total_labos
+                    worksheet.cell(row=frs_line, column=8).font = give_style('total').get('fuente')
+                    worksheet.cell(row=frs_line, column=8).number_format = '"$"#,##0_);("$"#,##0)'
+                    worksheet.cell(row=frs_line, column=8).border = give_style('block-right').get('borde')
+                    worksheet.cell(row=frs_line, column=8).alignment = give_style('total').get('alineacion')
                     total_factura += total_labos
                     frs_line += 1
                 worksheet.cell(row=frs_line, column=1).value = 'TOTAL VALOR FACTURADO: '
@@ -429,20 +440,22 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=1).alignment = give_style('total').get('alineacion')
                 worksheet.cell(row=frs_line, column=1).font = give_style('total').get('fuente')
                 worksheet.cell(row=frs_line, column=1).border = give_style('block-btmlft').get('borde')
-                worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=6)
-                worksheet.cell(row=frs_line, column=7).value = round(total_factura,2)
-                worksheet.cell(row=frs_line, column=7).number_format = '"$"#,##0_);("$"#,##0)'
-                worksheet.cell(row=frs_line, column=7).border = give_style('block-btmrgt').get('borde')
-                worksheet.cell(row=frs_line, column=7).font = give_style('enc-sinwrap').get('fuente')
-                worksheet.cell(row=frs_line, column=7).alignment = give_style('total').get('alineacion')
+                worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=7)
+                worksheet.cell(row=frs_line, column=8).value = round(total_factura,2)
+                worksheet.cell(row=frs_line, column=8).number_format = '"$"#,##0_);("$"#,##0)'
+                worksheet.cell(row=frs_line, column=8).border = give_style('block-btmrgt').get('borde')
+                worksheet.cell(row=frs_line, column=8).font = give_style('enc-sinwrap').get('fuente')
+                worksheet.cell(row=frs_line, column=8).alignment = give_style('total').get('alineacion')
 
                 worksheet.column_dimensions['A'].width = 12
                 worksheet.column_dimensions['B'].width = 20
                 worksheet.column_dimensions['C'].width = 9
-                worksheet.column_dimensions['D'].width = 7
+                worksheet.column_dimensions['D'].width = 12
                 worksheet.column_dimensions['E'].width = 7
-                worksheet.column_dimensions['F'].width = 12
-                worksheet.column_dimensions['G'].width = 9
+                worksheet.column_dimensions['F'].width = 7
+                worksheet.column_dimensions['G'].width = 12
+                worksheet.column_dimensions['H'].width = 9
+
                 img = Image("messer-logo.png")
                 img.width = 120
                 img.height = 60
