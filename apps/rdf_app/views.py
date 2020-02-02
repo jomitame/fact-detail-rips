@@ -2,7 +2,6 @@ from datetime import datetime
 from io import open
 import os
 
-#from django.db.models import Sum, F, FloatField, Q
 from django.shortcuts import render
 from openpyxl import Workbook
 from django.http import HttpResponse
@@ -51,7 +50,7 @@ class CreatorXLSXView(TemplateView):
                 ws.cell(row=fl, column=4).font = give_style('encabezado').get('fuente')
             else:
                 pass
-                # ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=3)
+                ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=4)
             ws.cell(row=fl, column=5).value = args[2]
             ws.cell(row=fl, column=5).alignment = give_style('enc-sinwrap').get('alineacion')
             ws.cell(row=fl, column=5).font = give_style('encabezado').get('fuente')
@@ -75,7 +74,7 @@ class CreatorXLSXView(TemplateView):
                     ws.cell(row=fl, column=2).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a3']))
                     ws.cell(row=fl, column=2).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=2).alignment = give_style('normal-wrap').get('alineacion')
-                    #ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=3)
+                    ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=4)
                     ws.cell(row=fl, column=5).value = str(getattr(elem, kwargs['a4']))
                     ws.cell(row=fl, column=5).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=5).alignment = give_style('title').get('alineacion')
@@ -101,7 +100,7 @@ class CreatorXLSXView(TemplateView):
                     ws.cell(row=fl, column=2).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a2']))
                     ws.cell(row=fl, column=2).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=2).alignment = give_style('normal-wrap').get('alineacion')
-                    #ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=3)
+                    ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=4)
                     ws.cell(row=fl, column=5).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a3']))
                     ws.cell(row=fl, column=5).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=5).alignment = give_style('title').get('alineacion')
