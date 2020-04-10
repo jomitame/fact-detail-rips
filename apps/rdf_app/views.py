@@ -40,26 +40,30 @@ class CreatorXLSXView(TemplateView):
             ws.cell(row=fl, column=2).value = args[1]
             ws.cell(row=fl, column=2).alignment = give_style('enc-sinwrap').get('alineacion')
             ws.cell(row=fl, column=2).font = give_style('encabezado').get('fuente')
+            ws.cell(row=fl, column=2).border = give_style('normal-wrap').get('borde')
             if type==3:
                 ws.cell(row=fl, column=3).value = args[7]
                 ws.cell(row=fl, column=3).alignment = give_style('enc-sinwrap').get('alineacion')
                 ws.cell(row=fl, column=3).font = give_style('encabezado').get('fuente')
-
+                ws.cell(row=fl, column=3).border = give_style('normal-wrap').get('borde')
                 ws.cell(row=fl, column=4).value = args[8]
                 ws.cell(row=fl, column=4).alignment = give_style('enc-sinwrap').get('alineacion')
                 ws.cell(row=fl, column=4).font = give_style('encabezado').get('fuente')
+                ws.cell(row=fl, column=4).border = give_style('normal-wrap').get('borde')
             else:
-                pass
                 ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=4)
             ws.cell(row=fl, column=5).value = args[2]
             ws.cell(row=fl, column=5).alignment = give_style('enc-sinwrap').get('alineacion')
             ws.cell(row=fl, column=5).font = give_style('encabezado').get('fuente')
+            ws.cell(row=fl, column=5).border = give_style('normal-wrap').get('borde')
             ws.cell(row=fl, column=6).value = args[3]
             ws.cell(row=fl, column=6).alignment = give_style('enc-sinwrap').get('alineacion')
             ws.cell(row=fl, column=6).font = give_style('encabezado').get('fuente')
+            ws.cell(row=fl, column=6).border = give_style('normal-wrap').get('borde')
             ws.cell(row=fl, column=7).value = args[4]
             ws.cell(row=fl, column=7).alignment = give_style('enc-sinwrap').get('alineacion')
             ws.cell(row=fl, column=7).font = give_style('encabezado').get('fuente')
+            ws.cell(row=fl, column=7).border = give_style('normal-wrap').get('borde')
             ws.cell(row=fl, column=8).value = args[5]
             ws.cell(row=fl, column=8).alignment = give_style('enc-sinwrap').get('alineacion')
             ws.cell(row=fl, column=8).font = give_style('encabezado').get('fuente')
@@ -74,17 +78,21 @@ class CreatorXLSXView(TemplateView):
                     ws.cell(row=fl, column=2).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a3']))
                     ws.cell(row=fl, column=2).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=2).alignment = give_style('normal-wrap').get('alineacion')
+                    ws.cell(row=fl, column=2).border = give_style('normal-wrap').get('borde')
                     ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=4)
                     ws.cell(row=fl, column=5).value = str(getattr(elem, kwargs['a4']))
                     ws.cell(row=fl, column=5).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=5).alignment = give_style('title').get('alineacion')
+                    ws.cell(row=fl, column=5).border = give_style('normal-wrap').get('borde')
                     ws.cell(row=fl, column=6).value = int(getattr(elem, kwargs['a5']))
                     ws.cell(row=fl, column=6).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=6).alignment = give_style('title').get('alineacion')
+                    ws.cell(row=fl, column=6).border = give_style('normal-wrap').get('borde')
                     ws.cell(row=fl, column=7).value = round(float(getattr(elem, kwargs['a6'])), 2)
                     ws.cell(row=fl, column=7).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=7).number_format = '"$"#,##0_);("$"#,##0)'
                     ws.cell(row=fl, column=7).alignment = give_style('total').get('alineacion')
+                    ws.cell(row=fl, column=7).border = give_style('normal-wrap').get('borde')
                     ws.cell(row=fl, column=8).value = round(float(getattr(elem, kwargs['a7'])), 2)
                     ws.cell(row=fl, column=8).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=8).number_format = '"$"#,##0_);("$"#,##0)'
@@ -100,17 +108,21 @@ class CreatorXLSXView(TemplateView):
                     ws.cell(row=fl, column=2).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a2']))
                     ws.cell(row=fl, column=2).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=2).alignment = give_style('normal-wrap').get('alineacion')
+                    ws.cell(row=fl, column=2).border = give_style('normal-wrap').get('borde')
                     ws.merge_cells(start_row=fl, start_column=2, end_row=fl, end_column=4)
                     ws.cell(row=fl, column=5).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a3']))
                     ws.cell(row=fl, column=5).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=5).alignment = give_style('title').get('alineacion')
+                    ws.cell(row=fl, column=5).border = give_style('normal-wrap').get('borde')
                     ws.cell(row=fl, column=6).value = int(getattr(elem, kwargs['a4']))
                     ws.cell(row=fl, column=6).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=6).alignment = give_style('title').get('alineacion')
+                    ws.cell(row=fl, column=6).border = give_style('normal-wrap').get('borde')
                     ws.cell(row=fl, column=7).value = round(float(getattr(elem, kwargs['a5'])), 2)
                     ws.cell(row=fl, column=7).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=7).number_format = '"$"#,##0_);("$"#,##0)'
                     ws.cell(row=fl, column=7).alignment = give_style('total').get('alineacion')
+                    ws.cell(row=fl, column=7).border = give_style('normal-wrap').get('borde')
                     ws.cell(row=fl, column=8).value = round(float(getattr(elem, kwargs['a6'])), 2)
                     ws.cell(row=fl, column=8).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=8).number_format = '"$"#,##0_);("$"#,##0)'
@@ -126,26 +138,30 @@ class CreatorXLSXView(TemplateView):
                     ws.cell(row=fl, column=2).value = str(getattr(getattr(elem, kwargs['a1']), kwargs['a3']))
                     ws.cell(row=fl, column=2).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=2).alignment = give_style('normal-wrap').get('alineacion')
+                    ws.cell(row=fl, column=2).border = give_style('normal-wrap').get('borde')
                     ws.cell(row=fl, column=3).value = '{}'.format(str(getattr(elem, kwargs['a8'])) if
                         getattr(elem, kwargs['a8']) is not None else '-')
                     ws.cell(row=fl, column=3).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=3).alignment = give_style('title').get('alineacion')
-
+                    ws.cell(row=fl, column=3).border = give_style('normal-wrap').get('borde')
                     ws.cell(row=fl, column=4).value = '{}'.format(str(getattr(elem, kwargs['a9'])) if
                                                                   getattr(elem, kwargs['a9']) is not None else '-')
                     ws.cell(row=fl, column=4).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=4).alignment = give_style('title').get('alineacion')
-
+                    ws.cell(row=fl, column=4).border = give_style('normal-wrap').get('borde')
                     ws.cell(row=fl, column=5).value = str(getattr(elem, kwargs['a4']))
                     ws.cell(row=fl, column=5).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=5).alignment = give_style('title').get('alineacion')
+                    ws.cell(row=fl, column=5).border = give_style('normal-wrap').get('borde')
                     ws.cell(row=fl, column=6).value = int(getattr(elem, kwargs['a5']))
                     ws.cell(row=fl, column=6).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=6).alignment = give_style('title').get('alineacion')
+                    ws.cell(row=fl, column=6).border = give_style('normal-wrap').get('borde')
                     ws.cell(row=fl, column=7).value = round(float(getattr(elem, kwargs['a6'])), 2)
                     ws.cell(row=fl, column=7).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=7).number_format = '"$"#,##0_);("$"#,##0)'
                     ws.cell(row=fl, column=7).alignment = give_style('total').get('alineacion')
+                    ws.cell(row=fl, column=7).border = give_style('normal-wrap').get('borde')
                     ws.cell(row=fl, column=8).value = round(float(getattr(elem, kwargs['a7'])), 2)
                     ws.cell(row=fl, column=8).font = give_style('normal').get('fuente')
                     ws.cell(row=fl, column=8).number_format = '"$"#,##0_);("$"#,##0)'
@@ -183,7 +199,7 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=1).value = 'DETALLE DE CARGOS DE FACTURA'
                 worksheet.cell(row=frs_line, column=1).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=1).alignment = give_style('title').get('alineacion')
-                worksheet.cell(row=frs_line, column=1).border = give_style('uniblock-top').get('borde')
+                worksheet.cell(row=frs_line, column=1).border = give_style('uniblock-top-ef').get('borde')
                 worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=8)
 
                 frs_line += 1
@@ -191,7 +207,7 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=1).value = 'FACTURA DE VENTA No '+str(fact.cod_fact)
                 worksheet.cell(row=frs_line, column=1).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=1).alignment = give_style('title').get('alineacion')
-                worksheet.cell(row=frs_line, column=1).border = give_style('uniblock-center').get('borde')
+                worksheet.cell(row=frs_line, column=1).border = give_style('uniblock-center-ef').get('borde')
                 worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=8)
                 frs_line += 1
 
@@ -199,7 +215,7 @@ class CreatorXLSXView(TemplateView):
                     fact.cut_ini) + ' al ' + str(fact.cut_end)
                 worksheet.cell(row=frs_line, column=1).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=1).alignment = give_style('title').get('alineacion')
-                worksheet.cell(row=frs_line, column=1).border = give_style('uniblock-center').get('borde')
+                worksheet.cell(row=frs_line, column=1).border = give_style('uniblock-center-ef').get('borde')
                 worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=8)
                 frs_line += 1
 
@@ -207,13 +223,13 @@ class CreatorXLSXView(TemplateView):
                     fact.regional.company.number_id) + str(fact.regional.company.cod_verify)
                 worksheet.cell(row=frs_line, column=1).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=1).alignment = give_style('title').get('alineacion')
-                worksheet.cell(row=frs_line, column=1).border = give_style('uniblock-center').get('borde')
+                worksheet.cell(row=frs_line, column=1).border = give_style('uniblock-center-ef').get('borde')
                 worksheet.merge_cells(start_row=frs_line, start_column=1, end_row=frs_line, end_column=8)
                 frs_line += 1
 
                 worksheet.cell(row=frs_line, column=1).value = 'NOMBRE'
                 worksheet.cell(row=frs_line, column=1).font = give_style('title').get('fuente')
-                worksheet.cell(row=frs_line, column=1).border = give_style('block-left').get('borde')
+                worksheet.cell(row=frs_line, column=1).border = give_style('block-left-ef').get('borde')
                 worksheet.cell(row=frs_line, column=2).value = '{}{} {}{}'.format(str(fact.patient.first_name), (
                             ' ' + str(fact.patient.second_name)) if fact.patient.second_name is not None else '',
                                                      str(fact.patient.first_last_name), (' ' + str(
@@ -223,28 +239,28 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=7).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=8).value = str(fact.patient.num_id)
                 worksheet.cell(row=frs_line, column=8).font = give_style('title').get('fuente')
-                worksheet.cell(row=frs_line, column=8).border = give_style('block-right').get('borde')
+                worksheet.cell(row=frs_line, column=8).border = give_style('block-right-ef').get('borde')
                 frs_line += 1
 
                 worksheet.cell(row=frs_line, column=1).value = 'DIAGNOSTICO'
                 worksheet.cell(row=frs_line, column=1).font = give_style('title').get('fuente')
-                worksheet.cell(row=frs_line, column=1).border = give_style('block-left').get('borde')
+                worksheet.cell(row=frs_line, column=1).border = give_style('block-left-ef').get('borde')
                 worksheet.cell(row=frs_line, column=2).value = str(fact.patient.diagnostic.name)
                 worksheet.cell(row=frs_line, column=2).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=7).value = 'EDAD'
                 worksheet.cell(row=frs_line, column=7).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=8).value = str(fact.patient.age)+' '+str(fact.patient.age_mess)
                 worksheet.cell(row=frs_line, column=8).font = give_style('title').get('fuente')
-                worksheet.cell(row=frs_line, column=8).border = give_style('block-right').get('borde')
+                worksheet.cell(row=frs_line, column=8).border = give_style('block-right-ef').get('borde')
                 frs_line += 1
 
                 worksheet.cell(row=frs_line, column=1).value = 'EPS'
                 worksheet.cell(row=frs_line, column=1).font = give_style('title').get('fuente')
-                worksheet.cell(row=frs_line, column=1).border = give_style('block-btmlft').get('borde')
+                worksheet.cell(row=frs_line, column=1).border = give_style('block-btmlft-ef').get('borde')
                 worksheet.cell(row=frs_line, column=2).value = str(fact.patient.eps.name)
                 worksheet.cell(row=frs_line, column=2).font = give_style('title').get('fuente')
                 worksheet.cell(row=frs_line, column=2).alignment = give_style('normal').get('alineacion')
-                worksheet.cell(row=frs_line, column=2).border = give_style('block-btmrgt').get('borde')
+                worksheet.cell(row=frs_line, column=2).border = give_style('block-btmrgt-ef').get('borde')
                 worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=8)
                 frs_line += 2
 
@@ -348,6 +364,7 @@ class CreatorXLSXView(TemplateView):
                 worksheet.cell(row=frs_line, column=2).value = 'SERVICIO'
                 worksheet.cell(row=frs_line, column=2).alignment = give_style('title').get('alineacion')
                 worksheet.cell(row=frs_line, column=2).font = give_style('title').get('fuente')
+                worksheet.cell(row=frs_line, column=2).border = give_style('normal-wrap').get('borde')
                 worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
                 worksheet.cell(row=frs_line, column=8).value = 'TOTAL'
                 worksheet.cell(row=frs_line, column=8).alignment = give_style('title').get('alineacion')
@@ -362,6 +379,7 @@ class CreatorXLSXView(TemplateView):
                     worksheet.cell(row=frs_line, column=2).value = 'SERVICIO ESTANCIA HOSPITALARIA'
                     worksheet.cell(row=frs_line, column=2).font = give_style('normal').get('fuente')
                     worksheet.cell(row=frs_line, column=2).alignment = give_style('normal').get('alineacion')
+                    worksheet.cell(row=frs_line, column=2).border = give_style('normal-wrap').get('borde')
                     worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
                     worksheet.cell(row=frs_line, column=8).value = total_services
                     worksheet.cell(row=frs_line, column=8).font = give_style('total').get('fuente')
@@ -378,6 +396,7 @@ class CreatorXLSXView(TemplateView):
                     worksheet.cell(row=frs_line, column=2).value = 'SERVICIO MEDICAMENTOS POS'
                     worksheet.cell(row=frs_line, column=2).font = give_style('normal').get('fuente')
                     worksheet.cell(row=frs_line, column=2).alignment = give_style('normal').get('alineacion')
+                    worksheet.cell(row=frs_line, column=2).border = give_style('normal-wrap').get('borde')
                     worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
                     worksheet.cell(row=frs_line, column=8).value = total_medis_pos
                     worksheet.cell(row=frs_line, column=8).font = give_style('total').get('fuente')
@@ -394,6 +413,7 @@ class CreatorXLSXView(TemplateView):
                     worksheet.cell(row=frs_line, column=2).value = 'SERVICIO MEDICAMENTOS NO POS'
                     worksheet.cell(row=frs_line, column=2).font = give_style('normal').get('fuente')
                     worksheet.cell(row=frs_line, column=2).alignment = give_style('normal').get('alineacion')
+                    worksheet.cell(row=frs_line, column=2).border = give_style('normal-wrap').get('borde')
                     worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
                     worksheet.cell(row=frs_line, column=8).value = total_medis_nopos
                     worksheet.cell(row=frs_line, column=8).font = give_style('total').get('fuente')
@@ -410,6 +430,7 @@ class CreatorXLSXView(TemplateView):
                     worksheet.cell(row=frs_line, column=2).value = 'SERVICIO DISPOSITIVOS MEDICO-QUIRURGICOS'
                     worksheet.cell(row=frs_line, column=2).font = give_style('normal').get('fuente')
                     worksheet.cell(row=frs_line, column=2).alignment = give_style('normal').get('alineacion')
+                    worksheet.cell(row=frs_line, column=2).border = give_style('normal-wrap').get('borde')
                     worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
                     worksheet.cell(row=frs_line, column=8).value = total_dispos
                     worksheet.cell(row=frs_line, column=8).font = give_style('total').get('fuente')
@@ -426,6 +447,7 @@ class CreatorXLSXView(TemplateView):
                     worksheet.cell(row=frs_line, column=2).value = 'SERVICIO LABORATORIO CLINICO'
                     worksheet.cell(row=frs_line, column=2).font = give_style('normal').get('fuente')
                     worksheet.cell(row=frs_line, column=2).alignment = give_style('normal').get('alineacion')
+                    worksheet.cell(row=frs_line, column=2).border = give_style('normal-wrap').get('borde')
                     worksheet.merge_cells(start_row=frs_line, start_column=2, end_row=frs_line, end_column=7)
                     worksheet.cell(row=frs_line, column=8).value = total_labos
                     worksheet.cell(row=frs_line, column=8).font = give_style('total').get('fuente')
@@ -563,7 +585,7 @@ class GeneratorRIPSView(TemplateView):
             )
             f.close()
 
-    def create_CT_file(self, dir, f_end, num_id_emp, file, cant_lines):
+    def create_CT_file(self, dir, f_end, num_hab_emp, file, cant_lines):
         f_pa_dir = f_end.split("/")
         f_pa_dir[-1] = f_pa_dir[-1][-2:]
         f_pa_dir = "".join(f_pa_dir)
@@ -571,11 +593,11 @@ class GeneratorRIPSView(TemplateView):
         os.makedirs(dir, exist_ok=True)
         with open(ruta, "a") as f:
             f.write(
-                '{},{},{},{}\n'.format(num_id_emp, f_end, file, cant_lines)
+                '{},{},{},{}\n'.format(num_hab_emp, f_end, file, cant_lines)
             )
             f.close()
 
-    def ct_caller(self, dirs_pa_ct, num_id_emp, f_end):
+    def ct_caller(self, dirs_pa_ct, num_hab_emp, f_end):
         f_pa_dir = f_end.split("/")
         f_pa_dir[-1] = f_pa_dir[-1][-2:]
         f_pa_dir = "".join(f_pa_dir)
@@ -589,7 +611,7 @@ class GeneratorRIPSView(TemplateView):
                     fichero.seek(0)
                     cant_lines = len(fichero.readlines())
                     fichero.close()
-                    self.create_CT_file(dir, f_end, num_id_emp, file, cant_lines)
+                    self.create_CT_file(dir, f_end, num_hab_emp, file, cant_lines)
                 except:
                     pass
 
@@ -728,7 +750,7 @@ class GeneratorRIPSView(TemplateView):
             total = int(total)
             self.create_AF_file(dir, cod_hab, nomb_emp, type_id_emp, num_id_emp, factu, f_ini, f_end, cod_eps, eps,total)
 
-        self.ct_caller(dirs_pa_ct, num_id_emp, f_end)
+        self.ct_caller(dirs_pa_ct, cod_hab, f_end)
 
 
 

@@ -36,74 +36,110 @@ def give_style(p_stylo):
         rl = PatternFill(fill_type="solid", fgColor="dddddd")
     elif (p_stylo == 'total'):
         ft = Font(size=8, bold=False, italic=False, color="000000")
-        bd = Border(left=Side(border_style="none"), right=Side(border_style="none"),
-                    top=Side(border_style="none"),
-                    bottom=Side(border_style="none"))
+        bd = Border(left=Side(border_style="thin"), right=Side(border_style="thin"),
+                    top=Side(border_style="thin"),
+                    bottom=Side(border_style="thin"))
         al = Alignment(horizontal='right', vertical='center')
         rl = PatternFill(fill_type="solid", fgColor="dddddd")
     elif(p_stylo == 'normal'):
         ft = Font(size=7, bold=False, italic=False, color="000000")
-        bd = Border(left=Side(border_style="none"), right=Side(border_style="none"),
-                    top=Side(border_style="none"),
-                    bottom=Side(border_style="none"))
+        bd = Border(left=Side(border_style="thin"), right=Side(border_style="thin"),
+                    top=Side(border_style="thin"),
+                    bottom=Side(border_style="thin"))
         al = Alignment(horizontal='left', vertical='center')
         rl = PatternFill(fill_type="none")
     elif (p_stylo == 'normal-bold'):
         ft = Font(size=7, bold=True, italic=False, color="000000")
-        bd = Border(left=Side(border_style="none"), right=Side(border_style="none"),
-                    top=Side(border_style="none"),
-                    bottom=Side(border_style="none"))
+        bd = Border(left=Side(border_style="thin"), right=Side(border_style="thin"),
+                    top=Side(border_style="thin"),
+                    bottom=Side(border_style="thin"))
         al = Alignment(horizontal='left', vertical='center')
         rl = PatternFill(fill_type="none")
     elif (p_stylo == 'normal-wrap'):
         ft = Font(size=7, bold=False, italic=False, color="000000")
-        bd = Border(left=Side(border_style="none"), right=Side(border_style="none"),
-                    top=Side(border_style="none"),
-                    bottom=Side(border_style="none"))
+        bd = Border(left=Side(border_style="thin"), right=Side(border_style="thin"),
+                    top=Side(border_style="thin"),
+                    bottom=Side(border_style="thin"))
         al = Alignment(horizontal='left', vertical='center', wrap_text=True)
         rl = PatternFill(fill_type="none")
-    elif (p_stylo == 'uniblock-top'):
+    elif (p_stylo == 'uniblock-top-ef'):
         ft = None
         al = None
         rl = None
         bd = Border(left=Side(border_style="double"), right=Side(border_style="double"),
                     top=Side(border_style="double"), bottom=Side(border_style="none"))
-    elif (p_stylo == 'uniblock-center'):
+    elif (p_stylo == 'uniblock-top'):
+        ft = None
+        al = None
+        rl = None
+        bd = Border(left=Side(border_style="double"), right=Side(border_style="double"),
+                    top=Side(border_style="double"), bottom=Side(border_style="thin"))
+    elif (p_stylo == 'uniblock-center-ef'):
         ft = None
         al = None
         rl = None
         bd = Border(left=Side(border_style="double"), right=Side(border_style="double"),
                     top=Side(border_style="none"), bottom=Side(border_style="none"))
-    elif (p_stylo == 'block-left'):
+    elif (p_stylo == 'uniblock-center'):
+        ft = None
+        al = None
+        rl = None
+        bd = Border(left=Side(border_style="double"), right=Side(border_style="double"),
+                    top=Side(border_style="thin"), bottom=Side(border_style="thin"))
+    elif (p_stylo == 'block-left-ef'):
         ft = None
         al = None
         rl = None
         bd = Border(left=Side(border_style="double"), right=Side(border_style="none"),
+                    top=Side(border_style="none"), bottom=Side(border_style="none"))
+    elif (p_stylo == 'block-left'):
+        ft = None
+        al = None
+        rl = None
+        bd = Border(left=Side(border_style="double"), right=Side(border_style="thin"),
+                    top=Side(border_style="thin"), bottom=Side(border_style="thin"))
+    elif (p_stylo == 'block-right-ef'):
+        ft = None
+        al = None
+        rl = None
+        bd = Border(left=Side(border_style="none"), right=Side(border_style="double"),
                     top=Side(border_style="none"), bottom=Side(border_style="none"))
     elif (p_stylo == 'block-right'):
         ft = None
         al = None
         rl = None
-        bd = Border(left=Side(border_style="none"), right=Side(border_style="double"),
-                    top=Side(border_style="none"), bottom=Side(border_style="none"))
-    elif (p_stylo == 'block-btmlft'):
+        bd = Border(left=Side(border_style="thin"), right=Side(border_style="double"),
+                    top=Side(border_style="thin"), bottom=Side(border_style="thin"))
+    elif (p_stylo == 'block-btmlft-ef'):
         ft = None
         al = None
         rl = None
         bd = Border(left=Side(border_style="double"), right=Side(border_style="none"),
                     top=Side(border_style="none"), bottom=Side(border_style="double"))
+    elif (p_stylo == 'block-btmlft'):
+        ft = None
+        al = None
+        rl = None
+        bd = Border(left=Side(border_style="double"), right=Side(border_style="thin"),
+                    top=Side(border_style="thin"), bottom=Side(border_style="double"))
     elif (p_stylo == 'block-bottom'):
         ft = None
         al = None
         rl = None
-        bd = Border(left=Side(border_style="none"), right=Side(border_style="none"),
-                    top=Side(border_style="none"), bottom=Side(border_style="double"))
-    elif (p_stylo == 'block-btmrgt'):
+        bd = Border(left=Side(border_style="thin"), right=Side(border_style="thin"),
+                    top=Side(border_style="thin"), bottom=Side(border_style="double"))
+    elif (p_stylo == 'block-btmrgt-ef'):
         ft = None
         al = None
         rl = None
         bd = Border(left=Side(border_style="none"), right=Side(border_style="double"),
                     top=Side(border_style="none"), bottom=Side(border_style="double"))
+    elif (p_stylo == 'block-btmrgt'):
+        ft = None
+        al = None
+        rl = None
+        bd = Border(left=Side(border_style="thin"), right=Side(border_style="double"),
+                    top=Side(border_style="thin"), bottom=Side(border_style="double"))
 
     my_stylo.update({'fuente': ft})
     my_stylo.update({'borde': bd})
