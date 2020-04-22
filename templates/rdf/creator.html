@@ -5,7 +5,7 @@
             <div class="card-header">
                 <h5 class="text-center">CREATOR</h5>
             </div>
-            <form class="p-2" method="post" action="{% url 'rdf:creator' %}">
+            <form class="p-2" method="post" action="{% url 'rdf:detallados' %}">
                 {% csrf_token %}
                 <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                     {{ form.fecha_ini }}

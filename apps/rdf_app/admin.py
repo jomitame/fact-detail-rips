@@ -40,6 +40,7 @@ class factAdmin(admin.ModelAdmin):
     inlines = (servi_inline, medi_inline, medinopos_inline, dispo_inline, labo_inline, )
     autocomplete_fields = ('patient',)
     ordering = ('cod_fact',)
+    save_as = True
     #list_display = ['id', 'cod_fact']
 
 @admin.register(Service)

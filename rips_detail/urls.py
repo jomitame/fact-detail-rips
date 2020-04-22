@@ -20,3 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('rdf/',include('apps.rdf_app.urls'))
 ]
+
+admin.site.site_header = "Detallados y Rips"
